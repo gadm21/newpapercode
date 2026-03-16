@@ -2392,7 +2392,7 @@ def run_ml_pipeline_experiment(data_root, window_len=100, guaranteed_sr=100,
 
     # ---- Save results to CSV ----
     import csv
-    results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'results')
+    results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'ml_results')
     os.makedirs(results_dir, exist_ok=True)
     csv_path = os.path.join(results_dir, 'ml_pipeline_results.csv')
     fieldnames = ['dataset', 'pipeline', 'model',
@@ -2421,7 +2421,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ML Pipeline Experiments')
     parser.add_argument('--data-root', type=str,
                         default=os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                             '..', '..', '..', 'wifi_sensing_data'),
+                                             '..', 'data'),
                         help='Root folder containing dataset subfolders')
     parser.add_argument('--window', type=int, default=300, help='Window length')
     parser.add_argument('--sr', type=int, default=150, help='Guaranteed sample rate')

@@ -8,7 +8,7 @@ and saves the fitted PCA (mean, components) for live-stream inference.
 
 Usage:
     python pca_train.py                     # default paths
-    python pca_train.py --data-root ../../wifi_sensing_data
+    python pca_train.py --data-root ../../data
     python pca_train.py --window 200 --sr 150
 """
 
@@ -394,7 +394,7 @@ def main():
     parser = argparse.ArgumentParser(description='Train PCA on CSI environment data')
     parser.add_argument('--data-root', type=str,
                         default=os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                             '..', '..', '..', 'wifi_sensing_data'),
+                                             '..', '..', 'data'),
                         help='Root folder containing dataset subfolders')
     parser.add_argument('--window', type=int, default=300,
                         help='PCA window size in samples (default: 300)')

@@ -1,4 +1,4 @@
-
+﻿
 
 # ================================================================================
 # BEST MODEL PER CONFIGURATION
@@ -234,7 +234,7 @@ class ResMLPClassifier(nn.Module):
 
     Projects input to a hidden dimension, passes through N residual blocks
     (each with skip connections), then classifies. Skip connections enable
-    deeper networks without degradation — isolates the value of residual
+    deeper networks without degradation â€” isolates the value of residual
     learning compared to the vanilla MLP baseline.
 
     Parameters
@@ -1195,7 +1195,7 @@ def adapt_and_evaluate(trained_model, X_target, X_test, y_test,
     Parameters
     ----------
     trained_model : AdaptiveModel (trained, eval mode)
-        Will be deepcopied — original is never modified.
+        Will be deepcopied â€” original is never modified.
     X_target : np.ndarray
         Target domain features (unlabeled).
     X_test, y_test : np.ndarray
@@ -1596,11 +1596,11 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
     """Run DL experiment: noBN/BN/BN+Whiten/FS20perclass/CORAL x 4 models x 4 datasets x 2 pipelines.
 
     Each configuration is run ``n_seeds`` times with different random seeds
-    to produce mean ± std statistics suitable for research publication.
+    to produce mean Â± std statistics suitable for research publication.
 
     When ``cv_mode=True``, temporal forward-chaining cross-validation is
     used instead of the fixed metadata train/test split.  Metrics are
-    collected per fold × seed, then aggregated for final mean ± std.
+    collected per fold Ã— seed, then aggregated for final mean Â± std.
 
     Parameters
     ----------
@@ -1650,7 +1650,7 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
 
     # Pipeline: rolling_variance only (best ML results, see Table tab:ml_comparison)
     PIPELINES = [
-        ('rolling_variance', dict(pipeline_name='rolling_variance', var_window=20)),
+        ('rolling_variance', dict(pipeline_name='rolling_variance', var_window=200)),
     ]
 
     # all_results[run_key] = {'seeds': [metrics_per_seed...], 'agg': aggregated}
@@ -1828,14 +1828,14 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
             agg['architecture'] = parts[2] if len(parts) > 2 else ''
             agg['condition'] = parts[3] if len(parts) > 3 else ''
             entry['agg'] = agg
-            print(f"  [{run_key}] MEAN±STD  "
-                  f"Acc={agg.get('accuracy_mean','?')}±{agg.get('accuracy_std','?')}  "
-                  f"F1w={agg.get('f1_weighted_mean','?')}±{agg.get('f1_weighted_std','?')}  "
-                  f"Kappa={agg.get('cohen_kappa_mean','?')}±{agg.get('cohen_kappa_std','?')}")
+            print(f"  [{run_key}] MEANÂ±STD  "
+                  f"Acc={agg.get('accuracy_mean','?')}Â±{agg.get('accuracy_std','?')}  "
+                  f"F1w={agg.get('f1_weighted_mean','?')}Â±{agg.get('f1_weighted_std','?')}  "
+                  f"Kappa={agg.get('cohen_kappa_mean','?')}Â±{agg.get('cohen_kappa_std','?')}")
 
-    # ---- Final comparison table (mean ± std) ----
+    # ---- Final comparison table (mean Â± std) ----
     print(f"\n{'='*200}")
-    split_desc = f"CV {n_folds or 'auto'} folds × {n_seeds} seeds" if cv_mode else f"{n_seeds} seeds"
+    split_desc = f"CV {n_folds or 'auto'} folds Ã— {n_seeds} seeds" if cv_mode else f"{n_seeds} seeds"
     print(f"FINAL DL COMPARISON: 2 Pipelines x 4 Datasets x 4 Architectures x 5 Conditions  ({split_desc})")
     print(f"{'='*200}")
     hdr = (f"{'Dataset':<25} {'Pipeline':<20} {'Arch':<14} {'Condition':<14} | "
@@ -1847,7 +1847,7 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
         def _fmt(k):
             m = a.get(f'{k}_mean', float('nan'))
             s = a.get(f'{k}_std', float('nan'))
-            return f"{m:.4f}±{s:.4f}"
+            return f"{m:.4f}Â±{s:.4f}"
         print(f"{a['dataset']:<25} {a['pipeline']:<20} "
               f"{a['architecture']:<14} {a['condition']:<14} | "
               f"{_fmt('accuracy'):>14} {_fmt('f1_weighted'):>14} "
@@ -1868,8 +1868,8 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
         best_key = max(subset, key=lambda k: subset[k]['agg'].get('accuracy_mean', 0))
         ba = subset[best_key]['agg']
         print(f"  {dn:<25} {pn:<20}: {ba['architecture']}/{ba['condition']}  "
-              f"Acc={ba.get('accuracy_mean',0):.4f}±{ba.get('accuracy_std',0):.4f}  "
-              f"F1={ba.get('f1_weighted_mean',0):.4f}±{ba.get('f1_weighted_std',0):.4f}")
+              f"Acc={ba.get('accuracy_mean',0):.4f}Â±{ba.get('accuracy_std',0):.4f}  "
+              f"F1={ba.get('f1_weighted_mean',0):.4f}Â±{ba.get('f1_weighted_std',0):.4f}")
 
     print(f"\n{'='*80}")
     print("DL experiments completed!")
@@ -1877,7 +1877,7 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
 
     # ---- Save per-seed results to CSV (full unified columns) ----
     import csv
-    results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'results')
+    results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),  'dl_results')
     os.makedirs(results_dir, exist_ok=True)
 
     # Per-seed CSV
@@ -1901,7 +1901,7 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
                 writer.writerow(row)
     print(f"\n[info] Per-seed results saved to {os.path.abspath(csv_path)}")
 
-    # Aggregated CSV (mean ± std)
+    # Aggregated CSV (mean Â± std)
     agg_csv_path = os.path.join(results_dir, f'dl_results_aggregated{csv_tag}.csv')
     agg_fields = ['dataset', 'pipeline', 'architecture', 'condition', 'n_seeds']
     for k in METRICS_CSV_FIELDS:
@@ -1916,747 +1916,6 @@ def run_dl_experiment(data_root, window_len=100, guaranteed_sr=100,
     return all_results
 
 
-def visualize_dl_results(results_dir=None, save=True):
-    """Load saved DL experiment CSV results and produce comprehensive plots + tables.
-
-    Parameters
-    ----------
-    results_dir : str or None
-        Directory containing the CSV result files. If None, uses ../results.
-    save : bool
-        If True, save plots as PNG files into results_dir.
-    """
-    import os
-    import numpy as np
-    import pandas as pd
-    import matplotlib
-    matplotlib.use('TkAgg')
-    import matplotlib.pyplot as plt
-    from matplotlib.lines import Line2D
-    from vis_gui import PlotGUI
-
-    if results_dir is None:
-        results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                   '..', 'results')
-    results_dir = os.path.abspath(results_dir)
-
-    # Try both CV and non-CV filenames
-    per_seed_path = None
-    agg_path = None
-    for tag in ['', '_cv']:
-        p = os.path.join(results_dir, f'dl_results_per_seed{tag}.csv')
-        a = os.path.join(results_dir, f'dl_results_aggregated{tag}.csv')
-        if os.path.exists(p):
-            per_seed_path = p
-        if os.path.exists(a):
-            agg_path = a
-    if per_seed_path is None or agg_path is None:
-        print(f"[vis] ERROR: DL CSV results not found in {results_dir}")
-        print(f"[vis] Expected: dl_results_per_seed[_cv].csv + dl_results_aggregated[_cv].csv")
-        print(f"[vis] Run the DL experiment first (without --vis) to generate results.")
-        return
-
-    df_seed = pd.read_csv(per_seed_path)
-    df_agg = pd.read_csv(agg_path)
-    print(f"[vis] Loaded {len(df_seed)} per-seed rows, {len(df_agg)} aggregated rows")
-    print(f"[vis]   from {per_seed_path}")
-
-    datasets = df_agg['dataset'].unique()
-    pipelines = df_agg['pipeline'].unique()
-    architectures = df_agg['architecture'].unique()
-    conditions = df_agg['condition'].unique()
-
-    n_ds = len(datasets)
-    n_pipe = len(pipelines)
-    n_arch = len(architectures)
-    n_cond = len(conditions)
-
-    # Short display names
-    ds_short = {d: d.replace('_data', '').replace('_', ' ').title() for d in datasets}
-    pipe_short = {p: p.replace('_', ' ').title() for p in pipelines}
-
-    # Color palettes
-    arch_colors = {}
-    cmap_arch = plt.cm.Set2
-    for i, a in enumerate(architectures):
-        arch_colors[a] = cmap_arch(i / max(n_arch - 1, 1))
-    cond_colors = {}
-    cmap_cond = plt.cm.tab10
-    for i, c in enumerate(conditions):
-        cond_colors[c] = cmap_cond(i / max(n_cond - 1, 1))
-    pipe_colors = {}
-    for i, p in enumerate(pipelines):
-        pipe_colors[p] = plt.cm.Dark2(i / max(n_pipe - 1, 1))
-
-    os.makedirs(results_dir, exist_ok=True)
-
-    # ================================================================
-    # TABLE 1: Console summary
-    # ================================================================
-    print(f"\n{'=' * 160}")
-    print(f"  DL RESULTS: {n_ds} Datasets x {n_pipe} Pipelines x {n_arch} Architectures x {n_cond} Conditions")
-    print(f"{'=' * 160}")
-    hdr = (f"{'Dataset':<25} {'Pipeline':<18} {'Arch':<12} {'Condition':<14} | "
-           f"{'Accuracy':>14} {'F1w':>14} {'Kappa':>14} {'MCC':>14} {'ECE':>14}")
-    print(hdr)
-    print('-' * 160)
-
-    best_per_ds = {}
-    for _, row in df_agg.iterrows():
-        ds = row['dataset']
-        acc = row.get('accuracy_mean', float('nan'))
-        if ds not in best_per_ds or acc > best_per_ds[ds][1]:
-            best_per_ds[ds] = (f"{row['pipeline']}/{row['architecture']}/{row['condition']}", acc)
-
-        def _fmt(k, r=row):
-            m = r.get(f'{k}_mean', float('nan'))
-            s = r.get(f'{k}_std', float('nan'))
-            if pd.isna(m):
-                return f"{'N/A':>14}"
-            return f"{m:.4f}+/-{s:.4f}"
-        print(f"{ds_short.get(ds, ds):<25} {pipe_short.get(row['pipeline'], row['pipeline']):<18} "
-              f"{row['architecture']:<12} {row['condition']:<14} | "
-              f"{_fmt('accuracy'):>14} {_fmt('f1_weighted'):>14} "
-              f"{_fmt('cohen_kappa'):>14} {_fmt('mcc'):>14} {_fmt('ece'):>14}")
-
-    print('-' * 160)
-    print("  BEST per dataset:")
-    for ds, (combo, acc) in best_per_ds.items():
-        print(f"    {ds_short.get(ds, ds):<25} -> {combo:<40} Acc={acc:.4f}")
-    print()
-
-    # ================================================================
-    # PLOT 1: Grouped bar — Accuracy by Architecture x Condition (one subplot per dataset, best pipeline)
-    # ================================================================
-    fig1, axes1 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 5), sharey=True)
-    if n_ds == 1:
-        axes1 = [axes1]
-    fig1.suptitle('DL Accuracy by Architecture x Condition (best pipeline per combo)',
-                  fontsize=13, fontweight='bold', y=1.02)
-
-    bar_w = 0.8 / n_arch
-    for ax, ds in zip(axes1, datasets):
-        sub = df_agg[df_agg['dataset'] == ds]
-        for j, arch in enumerate(architectures):
-            x = np.arange(n_cond)
-            vals, errs = [], []
-            for c in conditions:
-                r = sub[(sub['architecture'] == arch) & (sub['condition'] == c)]
-                if len(r) > 0:
-                    best_row = r.loc[r['accuracy_mean'].idxmax()]
-                    vals.append(float(best_row['accuracy_mean']))
-                    errs.append(float(best_row['accuracy_std']))
-                else:
-                    vals.append(0); errs.append(0)
-            ax.bar(x + j * bar_w, vals, bar_w, yerr=errs,
-                   label=arch, color=arch_colors[arch], edgecolor='white',
-                   linewidth=0.5, capsize=2, alpha=0.85)
-        ax.set_xticks(np.arange(n_cond) + bar_w * (n_arch - 1) / 2)
-        ax.set_xticklabels(conditions, rotation=35, ha='right', fontsize=8)
-        ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-        ax.set_ylim(0, 1.05)
-        ax.grid(axis='y', alpha=0.3, linestyle='--')
-        ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-    axes1[0].set_ylabel('Accuracy', fontsize=11)
-    axes1[-1].legend(fontsize=8, loc='lower right')
-    fig1.tight_layout()
-    if save:
-        fig1.savefig(os.path.join(results_dir, 'dl_plot_accuracy_arch_cond.png'),
-                     dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_accuracy_arch_cond.png")
-
-    # ================================================================
-    # PLOT 2: Heatmap — Accuracy (Architecture x Condition) for each pipeline+dataset
-    # ================================================================
-    for pipe in pipelines:
-        fig2, axes2 = plt.subplots(1, n_ds, figsize=(max(6, n_cond * 1.5) * n_ds, n_arch * 0.8 + 2),
-                                   sharey=True)
-        if n_ds == 1:
-            axes2 = [axes2]
-        fig2.suptitle(f'DL Accuracy Heatmap — Pipeline: {pipe_short.get(pipe, pipe)}',
-                      fontsize=13, fontweight='bold', y=1.02)
-        for ax, ds in zip(axes2, datasets):
-            heat = np.zeros((n_arch, n_cond))
-            for i, arch in enumerate(architectures):
-                for j, cond in enumerate(conditions):
-                    r = df_agg[(df_agg['dataset'] == ds) & (df_agg['pipeline'] == pipe) &
-                               (df_agg['architecture'] == arch) & (df_agg['condition'] == cond)]
-                    if len(r) > 0:
-                        heat[i, j] = float(r['accuracy_mean'].iloc[0])
-            im = ax.imshow(heat, cmap='RdYlGn', aspect='auto', vmin=0, vmax=1)
-            ax.set_xticks(np.arange(n_cond))
-            ax.set_xticklabels(conditions, rotation=40, ha='right', fontsize=8)
-            ax.set_yticks(np.arange(n_arch))
-            ax.set_yticklabels(architectures, fontsize=9)
-            for i in range(n_arch):
-                for j in range(n_cond):
-                    v = heat[i, j]
-                    color = 'white' if v < 0.5 else 'black'
-                    ax.text(j, i, f'{v:.3f}', ha='center', va='center',
-                            fontsize=8, fontweight='bold', color=color)
-            ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-        plt.colorbar(im, ax=axes2, label='Accuracy', shrink=0.8)
-        fig2.tight_layout()
-        if save:
-            fname = f'dl_plot_heatmap_{pipe}.png'
-            fig2.savefig(os.path.join(results_dir, fname), dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved {fname}")
-
-    # ================================================================
-    # PLOT 3: Multi-metric radar per dataset (best condition per architecture)
-    # ================================================================
-    radar_metrics = ['accuracy', 'f1_weighted', 'cohen_kappa', 'mcc', 'balanced_accuracy']
-    radar_labels = ['Accuracy', 'F1 Weighted', 'Cohen k', 'MCC', 'Balanced Acc']
-    n_rm = len(radar_metrics)
-    angles = np.linspace(0, 2 * np.pi, n_rm, endpoint=False).tolist()
-    angles += angles[:1]
-
-    fig3, axes3 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 5),
-                               subplot_kw=dict(polar=True))
-    if n_ds == 1:
-        axes3 = [axes3]
-    fig3.suptitle('DL Multi-Metric Radar (best condition per architecture)',
-                  fontsize=13, fontweight='bold', y=1.05)
-
-    for ax, ds in zip(axes3, datasets):
-        sub = df_agg[df_agg['dataset'] == ds]
-        for arch in architectures:
-            asub = sub[sub['architecture'] == arch]
-            if len(asub) == 0:
-                continue
-            best_row = asub.loc[asub['accuracy_mean'].idxmax()]
-            values = []
-            for rm in radar_metrics:
-                v = best_row.get(f'{rm}_mean', 0)
-                values.append(max(0, float(v) if not pd.isna(v) else 0))
-            values += values[:1]
-            ax.plot(angles, values, 'o-', linewidth=1.5,
-                    label=f"{arch} ({best_row['condition']})",
-                    color=arch_colors[arch], markersize=4)
-            ax.fill(angles, values, alpha=0.1, color=arch_colors[arch])
-        ax.set_xticks(angles[:-1])
-        ax.set_xticklabels(radar_labels, fontsize=8)
-        ax.set_ylim(0, 1.05)
-        ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold', pad=15)
-        ax.legend(fontsize=7, loc='lower right', bbox_to_anchor=(1.3, -0.1))
-    fig3.tight_layout()
-    if save:
-        fig3.savefig(os.path.join(results_dir, 'dl_plot_radar_metrics.png'),
-                     dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_radar_metrics.png")
-
-    # ================================================================
-    # PLOT 4: Condition benefit — stacked delta bars showing improvement over noBN
-    # ================================================================
-    fig4, axes4 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 5), sharey=True)
-    if n_ds == 1:
-        axes4 = [axes4]
-    fig4.suptitle('Condition Benefit: Accuracy Delta vs noBN Baseline',
-                  fontsize=13, fontweight='bold', y=1.02)
-
-    for ax, ds in zip(axes4, datasets):
-        sub = df_agg[df_agg['dataset'] == ds]
-        other_conds = [c for c in conditions if c != 'noBN']
-        bar_w2 = 0.8 / n_arch
-        for j, arch in enumerate(architectures):
-            asub = sub[sub['architecture'] == arch]
-            base = asub[asub['condition'] == 'noBN']
-            base_acc = float(base['accuracy_mean'].mean()) if len(base) > 0 else 0
-            x = np.arange(len(other_conds))
-            deltas = []
-            for c in other_conds:
-                r = asub[asub['condition'] == c]
-                if len(r) > 0:
-                    deltas.append(float(r['accuracy_mean'].mean()) - base_acc)
-                else:
-                    deltas.append(0)
-            colors = ['#66bb6a' if d >= 0 else '#ef5350' for d in deltas]
-            ax.bar(x + j * bar_w2, deltas, bar_w2, label=arch if ds == datasets[0] else '',
-                   color=arch_colors[arch], edgecolor='white', linewidth=0.5, alpha=0.85)
-        ax.axhline(0, color='gray', linewidth=0.8, linestyle='-')
-        ax.set_xticks(np.arange(len(other_conds)) + bar_w2 * (n_arch - 1) / 2)
-        ax.set_xticklabels(other_conds, rotation=30, ha='right', fontsize=8)
-        ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-        ax.grid(axis='y', alpha=0.3, linestyle='--')
-        ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-    axes4[0].set_ylabel('Accuracy Delta vs noBN', fontsize=10)
-    axes4[0].legend(fontsize=8, loc='best')
-    fig4.tight_layout()
-    if save:
-        fig4.savefig(os.path.join(results_dir, 'dl_plot_condition_benefit.png'),
-                     dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_condition_benefit.png")
-
-    # ================================================================
-    # PLOT 5: Architecture comparison — F1 Weighted by pipeline+dataset
-    # ================================================================
-    fig5, axes5 = plt.subplots(1, n_pipe, figsize=(6 * n_pipe, 5), sharey=True)
-    if n_pipe == 1:
-        axes5 = [axes5]
-    fig5.suptitle('F1 Weighted by Architecture (avg across conditions)',
-                  fontsize=13, fontweight='bold', y=1.02)
-
-    bar_w5 = 0.8 / n_arch
-    for ax, pipe in zip(axes5, pipelines):
-        sub = df_agg[df_agg['pipeline'] == pipe]
-        for j, arch in enumerate(architectures):
-            x = np.arange(n_ds)
-            vals, errs = [], []
-            for ds in datasets:
-                r = sub[(sub['dataset'] == ds) & (sub['architecture'] == arch)]
-                if len(r) > 0:
-                    vals.append(float(r['f1_weighted_mean'].mean()))
-                    errs.append(float(r['f1_weighted_std'].mean()))
-                else:
-                    vals.append(0); errs.append(0)
-            ax.bar(x + j * bar_w5, vals, bar_w5, yerr=errs,
-                   label=arch, color=arch_colors[arch], edgecolor='white',
-                   linewidth=0.5, capsize=2, alpha=0.85)
-        ax.set_xticks(np.arange(n_ds) + bar_w5 * (n_arch - 1) / 2)
-        ax.set_xticklabels([ds_short.get(d, d) for d in datasets], fontsize=9, rotation=20, ha='right')
-        ax.set_title(pipe_short.get(pipe, pipe), fontsize=10, fontweight='bold')
-        ax.set_ylim(0, 1.05)
-        ax.grid(axis='y', alpha=0.3, linestyle='--')
-        ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-    axes5[0].set_ylabel('F1 Weighted', fontsize=10)
-    axes5[-1].legend(fontsize=8, loc='lower right')
-    fig5.tight_layout()
-    if save:
-        fig5.savefig(os.path.join(results_dir, 'dl_plot_f1_architecture.png'),
-                     dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_f1_architecture.png")
-
-    # ================================================================
-    # PLOT 6: Training time boxplots (per-seed data)
-    # ================================================================
-    if 'train_time_s' in df_seed.columns:
-        fig6, axes6 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 4), sharey=False)
-        if n_ds == 1:
-            axes6 = [axes6]
-        fig6.suptitle('DL Training Time (seconds, log scale)',
-                      fontsize=13, fontweight='bold', y=1.02)
-        for ax, ds in zip(axes6, datasets):
-            sub = df_seed[df_seed['dataset'] == ds]
-            positions, labels_list, data_groups = [], [], []
-            idx = 0
-            for arch in architectures:
-                for cond in conditions:
-                    vals = sub[(sub['architecture'] == arch) &
-                               (sub['condition'] == cond)]['train_time_s'].dropna()
-                    if len(vals) > 0:
-                        data_groups.append(vals.values)
-                        labels_list.append(f"{arch[:5]}\n{cond[:6]}")
-                        positions.append(idx)
-                        idx += 1
-            if data_groups:
-                bp = ax.boxplot(data_groups, positions=positions, widths=0.6,
-                                patch_artist=True, showmeans=True,
-                                meanprops=dict(marker='D', markerfacecolor='red', markersize=3))
-                for pi, patch in enumerate(bp['boxes']):
-                    patch.set_facecolor(arch_colors.get(
-                        architectures[pi // n_cond % n_arch], '#cccccc'))
-                    patch.set_alpha(0.6)
-                ax.set_xticks(positions)
-                ax.set_xticklabels(labels_list, rotation=45, ha='right', fontsize=6)
-                ax.set_yscale('log')
-                ax.grid(axis='y', alpha=0.3, linestyle='--')
-            ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-            ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-        axes6[0].set_ylabel('Time (s)', fontsize=10)
-        fig6.tight_layout()
-        if save:
-            fig6.savefig(os.path.join(results_dir, 'dl_plot_training_time.png'),
-                         dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_training_time.png")
-
-    # ================================================================
-    # PLOT 7: ECE vs Accuracy scatter
-    # ================================================================
-    if 'ece_mean' in df_agg.columns and 'accuracy_mean' in df_agg.columns:
-        fig7, ax7 = plt.subplots(figsize=(9, 7))
-        markers_map = {'MLP': 'o', 'ResMLP': 's', 'Conv1D': '^', 'CNN_LSTM': 'D'}
-        for _, row in df_agg.iterrows():
-            acc = row.get('accuracy_mean', np.nan)
-            ece = row.get('ece_mean', np.nan)
-            if pd.isna(acc) or pd.isna(ece):
-                continue
-            arch = row['architecture']
-            cond = row['condition']
-            marker = markers_map.get(arch, 'o')
-            ax7.scatter(acc, ece, c=[cond_colors[cond]], marker=marker,
-                        s=70, alpha=0.75, edgecolors='black', linewidths=0.4)
-
-        # Legends
-        legend_arch = [Line2D([0], [0], marker=markers_map.get(a, 'o'), color='w',
-                              markerfacecolor='gray', markersize=8, label=a)
-                       for a in architectures]
-        legend_cond = [Line2D([0], [0], marker='o', color='w',
-                              markerfacecolor=cond_colors[c], markersize=8, label=c)
-                       for c in conditions]
-        l1 = ax7.legend(handles=legend_arch, title='Architecture',
-                        loc='upper left', fontsize=8)
-        ax7.add_artist(l1)
-        ax7.legend(handles=legend_cond, title='Condition',
-                   loc='upper right', fontsize=8)
-        ax7.set_xlabel('Accuracy', fontsize=11)
-        ax7.set_ylabel('ECE (lower = better)', fontsize=11)
-        ax7.set_title('DL Calibration: ECE vs Accuracy', fontsize=13, fontweight='bold')
-        ax7.grid(alpha=0.3, linestyle='--')
-        ax7.spines['top'].set_visible(False); ax7.spines['right'].set_visible(False)
-        fig7.tight_layout()
-        if save:
-            fig7.savefig(os.path.join(results_dir, 'dl_plot_ece_vs_accuracy.png'),
-                         dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_ece_vs_accuracy.png")
-
-    # ================================================================
-    # PLOT 8: Pipeline comparison — amplitude vs rolling_variance per arch
-    # ================================================================
-    if n_pipe >= 2:
-        fig8, axes8 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 5), sharey=True)
-        if n_ds == 1:
-            axes8 = [axes8]
-        fig8.suptitle('Pipeline Comparison: Accuracy (avg across conditions)',
-                      fontsize=13, fontweight='bold', y=1.02)
-        bar_w8 = 0.8 / n_pipe
-        for ax, ds in zip(axes8, datasets):
-            sub = df_agg[df_agg['dataset'] == ds]
-            for j, pipe in enumerate(pipelines):
-                x = np.arange(n_arch)
-                vals, errs = [], []
-                for arch in architectures:
-                    r = sub[(sub['pipeline'] == pipe) & (sub['architecture'] == arch)]
-                    if len(r) > 0:
-                        vals.append(float(r['accuracy_mean'].mean()))
-                        errs.append(float(r['accuracy_std'].mean()))
-                    else:
-                        vals.append(0); errs.append(0)
-                ax.bar(x + j * bar_w8, vals, bar_w8, yerr=errs,
-                       label=pipe_short.get(pipe, pipe), color=pipe_colors[pipe],
-                       edgecolor='white', linewidth=0.5, capsize=2, alpha=0.85)
-            ax.set_xticks(np.arange(n_arch) + bar_w8 * (n_pipe - 1) / 2)
-            ax.set_xticklabels(architectures, fontsize=9, rotation=20, ha='right')
-            ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-            ax.set_ylim(0, 1.05)
-            ax.grid(axis='y', alpha=0.3, linestyle='--')
-            ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-        axes8[0].set_ylabel('Accuracy', fontsize=10)
-        axes8[-1].legend(fontsize=8, loc='lower right')
-        fig8.tight_layout()
-        if save:
-            fig8.savefig(os.path.join(results_dir, 'dl_plot_pipeline_comparison.png'),
-                         dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_pipeline_comparison.png")
-
-    # ================================================================
-    # PLOT 9: MCC vs Cohen's Kappa scatter (agreement metrics)
-    # ================================================================
-    if 'mcc_mean' in df_agg.columns and 'cohen_kappa_mean' in df_agg.columns:
-        fig9, ax9 = plt.subplots(figsize=(8, 6))
-        for _, row in df_agg.iterrows():
-            mcc = row.get('mcc_mean', np.nan)
-            kappa = row.get('cohen_kappa_mean', np.nan)
-            if pd.isna(mcc) or pd.isna(kappa):
-                continue
-            ds = row['dataset']
-            arch = row['architecture']
-            marker = markers_map.get(arch, 'o')
-            ax9.scatter(kappa, mcc, c=[cond_colors[row['condition']]],
-                        marker=marker, s=60, alpha=0.7, edgecolors='black', linewidths=0.4)
-        # Diagonal reference
-        ax9.plot([-0.5, 1], [-0.5, 1], 'k--', alpha=0.3, linewidth=0.8)
-        ax9.set_xlabel("Cohen's Kappa", fontsize=11)
-        ax9.set_ylabel('MCC', fontsize=11)
-        ax9.set_title('Agreement Metrics: MCC vs Kappa', fontsize=13, fontweight='bold')
-        ax9.grid(alpha=0.3, linestyle='--')
-        ax9.spines['top'].set_visible(False); ax9.spines['right'].set_visible(False)
-        fig9.tight_layout()
-        if save:
-            fig9.savefig(os.path.join(results_dir, 'dl_plot_mcc_vs_kappa.png'),
-                         dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_mcc_vs_kappa.png")
-
-    # ================================================================
-    # PLOT 10: Confidence distribution — mean confidence by condition
-    # ================================================================
-    if 'mean_confidence' in df_seed.columns:
-        fig10, axes10 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 4), sharey=True)
-        if n_ds == 1:
-            axes10 = [axes10]
-        fig10.suptitle('Prediction Confidence Distribution by Condition',
-                       fontsize=13, fontweight='bold', y=1.02)
-        for ax, ds in zip(axes10, datasets):
-            sub = df_seed[df_seed['dataset'] == ds]
-            box_data, box_labels = [], []
-            for cond in conditions:
-                vals = sub[sub['condition'] == cond]['mean_confidence'].dropna()
-                if len(vals) > 0:
-                    box_data.append(vals.values)
-                    box_labels.append(cond)
-            if box_data:
-                bp = ax.boxplot(box_data, labels=box_labels, patch_artist=True,
-                                showmeans=True, meanprops=dict(marker='D',
-                                markerfacecolor='red', markersize=4))
-                for pi, patch in enumerate(bp['boxes']):
-                    patch.set_facecolor(cond_colors.get(box_labels[pi], '#cccccc'))
-                    patch.set_alpha(0.6)
-                ax.set_xticklabels(box_labels, rotation=30, ha='right', fontsize=8)
-            ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-            ax.set_ylim(0, 1.05)
-            ax.grid(axis='y', alpha=0.3, linestyle='--')
-            ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-        axes10[0].set_ylabel('Mean Confidence', fontsize=10)
-        fig10.tight_layout()
-        if save:
-            fig10.savefig(os.path.join(results_dir, 'dl_plot_confidence_dist.png'),
-                          dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_confidence_dist.png")
-
-    # ================================================================
-    # PLOT 11: Best ranking table as figure
-    # ================================================================
-    fig11, ax11 = plt.subplots(figsize=(14, max(3, n_ds * 0.8 + 2)))
-    ax11.axis('off')
-    rank_cols = ['Dataset', 'Pipeline', 'Architecture', 'Condition',
-                 'Accuracy', 'F1w', 'Kappa', 'MCC', 'ECE']
-    rank_data = []
-    for ds in datasets:
-        sub = df_agg[df_agg['dataset'] == ds]
-        if len(sub) == 0:
-            continue
-        best = sub.loc[sub['accuracy_mean'].idxmax()]
-        rank_data.append([
-            ds_short.get(ds, ds),
-            pipe_short.get(best['pipeline'], best['pipeline']),
-            best['architecture'], best['condition'],
-            f"{best['accuracy_mean']:.4f}",
-            f"{best.get('f1_weighted_mean', 0):.4f}",
-            f"{best.get('cohen_kappa_mean', 0):.4f}",
-            f"{best.get('mcc_mean', 0):.4f}",
-            f"{best.get('ece_mean', 0):.4f}",
-        ])
-    tbl = ax11.table(cellText=rank_data, colLabels=rank_cols,
-                     loc='center', cellLoc='center')
-    tbl.auto_set_font_size(False)
-    tbl.set_fontsize(9)
-    tbl.scale(1.0, 1.5)
-    for j in range(len(rank_cols)):
-        tbl[0, j].set_facecolor('#2d333b')
-        tbl[0, j].set_text_props(color='white', fontweight='bold')
-    for i in range(len(rank_data)):
-        color = '#f0f4f8' if i % 2 == 0 else 'white'
-        for j in range(len(rank_cols)):
-            tbl[i + 1, j].set_facecolor(color)
-    ax11.set_title('Best DL Configuration per Dataset', fontsize=14,
-                   fontweight='bold', pad=20)
-    fig11.tight_layout()
-    if save:
-        fig11.savefig(os.path.join(results_dir, 'dl_plot_best_ranking.png'),
-                      dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_best_ranking.png")
-
-    # ================================================================
-    # PLOT 12: Log Loss by architecture (per dataset)
-    # ================================================================
-    if 'log_loss_mean' in df_agg.columns:
-        fig12, ax12 = plt.subplots(figsize=(max(8, n_ds * 2.5), 5))
-        fig12.suptitle('DL Log Loss by Architecture (lower = better)',
-                       fontsize=13, fontweight='bold')
-        bar_w12 = 0.8 / n_arch
-        for j, arch in enumerate(architectures):
-            x = np.arange(n_ds)
-            vals = []
-            for ds in datasets:
-                sub = df_agg[(df_agg['dataset'] == ds) & (df_agg['architecture'] == arch)]
-                vals.append(float(sub['log_loss_mean'].mean()) if len(sub) > 0 else 0)
-            ax12.bar(x + j * bar_w12, vals, bar_w12, label=arch,
-                     color=arch_colors[arch], edgecolor='white',
-                     linewidth=0.5, alpha=0.85)
-        ax12.set_xticks(np.arange(n_ds) + bar_w12 * (n_arch - 1) / 2)
-        ax12.set_xticklabels([ds_short.get(d, d) for d in datasets], fontsize=10)
-        ax12.set_ylabel('Log Loss (avg across conditions)', fontsize=10)
-        ax12.legend(fontsize=9)
-        ax12.grid(axis='y', alpha=0.3, linestyle='--')
-        ax12.spines['top'].set_visible(False); ax12.spines['right'].set_visible(False)
-        fig12.tight_layout()
-        if save:
-            fig12.savefig(os.path.join(results_dir, 'dl_plot_log_loss.png'),
-                          dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_log_loss.png")
-
-    # ================================================================
-    # PLOT 13: Balanced Acc vs Accuracy scatter
-    # ================================================================
-    if 'balanced_accuracy_mean' in df_agg.columns:
-        fig13, ax13b = plt.subplots(figsize=(8, 6))
-        for _, row in df_agg.iterrows():
-            acc = row.get('accuracy_mean', np.nan)
-            bal = row.get('balanced_accuracy_mean', np.nan)
-            if pd.isna(acc) or pd.isna(bal):
-                continue
-            arch = row['architecture']
-            marker = markers_map.get(arch, 'o')
-            ax13b.scatter(acc, bal, c=[cond_colors[row['condition']]],
-                          marker=marker, s=70, alpha=0.8, edgecolors='black',
-                          linewidths=0.4)
-        ax13b.plot([0, 1], [0, 1], 'k--', alpha=0.3, linewidth=0.8)
-        ax13b.set_xlabel('Accuracy', fontsize=11)
-        ax13b.set_ylabel('Balanced Accuracy', fontsize=11)
-        ax13b.set_title('DL Class Imbalance: Balanced Acc vs Accuracy',
-                        fontsize=13, fontweight='bold')
-        ax13b.grid(alpha=0.3, linestyle='--')
-        ax13b.spines['top'].set_visible(False); ax13b.spines['right'].set_visible(False)
-        fig13.tight_layout()
-        if save:
-            fig13.savefig(os.path.join(results_dir, 'dl_plot_balanced_vs_accuracy.png'),
-                          dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_balanced_vs_accuracy.png")
-
-    # ================================================================
-    # PLOT 14: Per-seed accuracy variance boxplots
-    # ================================================================
-    fig14, axes14 = plt.subplots(1, n_ds, figsize=(5 * n_ds, 4), sharey=True)
-    if n_ds == 1:
-        axes14 = [axes14]
-    fig14.suptitle('DL Per-Seed Accuracy Spread by Architecture',
-                   fontsize=13, fontweight='bold', y=1.02)
-    for ax, ds in zip(axes14, datasets):
-        sub = df_seed[df_seed['dataset'] == ds]
-        box_data, box_labels = [], []
-        for arch in architectures:
-            vals = sub[sub['architecture'] == arch]['accuracy'].dropna()
-            if len(vals) > 0:
-                box_data.append(vals.values)
-                box_labels.append(arch)
-        if box_data:
-            bp = ax.boxplot(box_data, labels=box_labels, patch_artist=True,
-                            showmeans=True, meanprops=dict(marker='D',
-                            markerfacecolor='red', markersize=4))
-            for pi, patch in enumerate(bp['boxes']):
-                patch.set_facecolor(arch_colors.get(box_labels[pi], '#cccccc'))
-                patch.set_alpha(0.6)
-            ax.set_xticklabels(box_labels, rotation=30, ha='right', fontsize=8)
-        ax.set_title(ds_short.get(ds, ds), fontsize=10, fontweight='bold')
-        ax.set_ylim(0, 1.05)
-        ax.grid(axis='y', alpha=0.3, linestyle='--')
-        ax.spines['top'].set_visible(False); ax.spines['right'].set_visible(False)
-    axes14[0].set_ylabel('Accuracy', fontsize=10)
-    fig14.tight_layout()
-    if save:
-        fig14.savefig(os.path.join(results_dir, 'dl_plot_accuracy_variance.png'),
-                      dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_accuracy_variance.png")
-
-    # ================================================================
-    # PLOT 15: Full results table (all configurations)
-    # ================================================================
-    fig15, ax15t = plt.subplots(figsize=(18, max(4, len(df_agg) * 0.32 + 2)))
-    ax15t.axis('off')
-    tbl_cols = ['Dataset', 'Pipeline', 'Arch', 'Cond', 'Acc', 'BalAcc',
-                'F1w', 'Kappa', 'MCC', 'ECE', 'LogLoss']
-    tbl_data = []
-    for _, row in df_agg.iterrows():
-        tbl_data.append([
-            ds_short.get(row['dataset'], row['dataset']),
-            pipe_short.get(row['pipeline'], row['pipeline']),
-            row['architecture'], row['condition'],
-            f"{row.get('accuracy_mean', 0):.4f}",
-            f"{row.get('balanced_accuracy_mean', 0):.4f}",
-            f"{row.get('f1_weighted_mean', 0):.4f}",
-            f"{row.get('cohen_kappa_mean', 0):.4f}",
-            f"{row.get('mcc_mean', 0):.4f}",
-            f"{row.get('ece_mean', 0):.4f}",
-            f"{row.get('log_loss_mean', 0):.4f}",
-        ])
-    tbl15 = ax15t.table(cellText=tbl_data, colLabels=tbl_cols,
-                        loc='center', cellLoc='center')
-    tbl15.auto_set_font_size(False)
-    tbl15.set_fontsize(7)
-    tbl15.scale(1.0, 1.25)
-    for j in range(len(tbl_cols)):
-        tbl15[0, j].set_facecolor('#2d333b')
-        tbl15[0, j].set_text_props(color='white', fontweight='bold')
-    for i in range(len(tbl_data)):
-        color = '#f0f4f8' if i % 2 == 0 else 'white'
-        for j in range(len(tbl_cols)):
-            tbl15[i + 1, j].set_facecolor(color)
-    ax15t.set_title('Full DL Results Table (all configurations)',
-                    fontsize=14, fontweight='bold', pad=20)
-    fig15.tight_layout()
-    if save:
-        fig15.savefig(os.path.join(results_dir, 'dl_plot_full_results_table.png'),
-                      dpi=150, bbox_inches='tight')
-        print(f"[vis] Saved dl_plot_full_results_table.png")
-
-    # ================================================================
-    # PLOT 16: Metric correlation matrix
-    # ================================================================
-    corr_cols = [c for c in ['accuracy', 'f1_weighted', 'f1_macro',
-                              'cohen_kappa', 'mcc', 'ece', 'log_loss',
-                              'mean_confidence', 'mean_entropy']
-                 if c in df_seed.columns]
-    if len(corr_cols) >= 4:
-        fig16, ax16 = plt.subplots(figsize=(9, 7))
-        corr_matrix = df_seed[corr_cols].corr()
-        im16 = ax16.imshow(corr_matrix.values, cmap='RdBu_r', vmin=-1, vmax=1,
-                           aspect='auto')
-        n_corr = len(corr_cols)
-        short_labels = [c.replace('_', '\n').replace('weighted', 'w')
-                        .replace('confidence', 'conf')
-                        .replace('entropy', 'ent') for c in corr_cols]
-        ax16.set_xticks(np.arange(n_corr))
-        ax16.set_xticklabels(short_labels, rotation=45, ha='right', fontsize=8)
-        ax16.set_yticks(np.arange(n_corr))
-        ax16.set_yticklabels(short_labels, fontsize=8)
-        for ci in range(n_corr):
-            for cj in range(n_corr):
-                v = corr_matrix.values[ci, cj]
-                clr = 'white' if abs(v) > 0.5 else 'black'
-                ax16.text(cj, ci, f'{v:.2f}', ha='center', va='center',
-                         fontsize=7, fontweight='bold', color=clr)
-        plt.colorbar(im16, ax=ax16, label='Correlation', shrink=0.8)
-        ax16.set_title('DL Metric Correlation Matrix',
-                       fontsize=13, fontweight='bold')
-        fig16.tight_layout()
-        if save:
-            fig16.savefig(os.path.join(results_dir, 'dl_plot_metric_correlation.png'),
-                          dpi=150, bbox_inches='tight')
-            print(f"[vis] Saved dl_plot_metric_correlation.png")
-
-    # ================================================================
-    # Launch tabbed GUI with all figures
-    # ================================================================
-    tab_names = [
-        ('Accuracy by Arch x Cond', 'dl_plot_accuracy_arch_cond.png'),
-        ('Accuracy Heatmap', 'dl_plot_heatmap.png'),
-        ('Radar Metrics', 'dl_plot_radar_metrics.png'),
-        ('Condition Benefit', 'dl_plot_condition_benefit.png'),
-        ('F1 by Architecture', 'dl_plot_f1_architecture.png'),
-        ('Training Time', 'dl_plot_training_time.png'),
-        ('ECE vs Accuracy', 'dl_plot_ece_vs_accuracy.png'),
-        ('Pipeline Comparison', 'dl_plot_pipeline_comparison.png'),
-        ('MCC vs Kappa', 'dl_plot_mcc_vs_kappa.png'),
-        ('Confidence Dist', 'dl_plot_confidence_dist.png'),
-        ('Best Ranking', 'dl_plot_best_ranking.png'),
-        ('Log Loss', 'dl_plot_log_loss.png'),
-        ('Balanced vs Acc', 'dl_plot_balanced_vs_accuracy.png'),
-        ('Accuracy Variance', 'dl_plot_accuracy_variance.png'),
-        ('Full Results Table', 'dl_plot_full_results_table.png'),
-        ('Metric Correlation', 'dl_plot_metric_correlation.png'),
-    ]
-    gui = PlotGUI("DL Experiment Results", results_dir=results_dir)
-    open_figs = {fig.number: fig for fig in [plt.figure(n) for n in plt.get_fignums()]}
-    fig_list = list(open_figs.values())
-    for i, fig in enumerate(fig_list):
-        if i < len(tab_names):
-            name, fname = tab_names[i]
-        else:
-            name, fname = f"Plot {i+1}", f"dl_plot_{i+1}.png"
-        gui.add_plot(name, fig, fname)
-    print(f"\n[vis] Launching DL GUI with {len(fig_list)} plots...")
-    gui.show()
-
-
 if __name__ == '__main__':
     import sys, os, argparse
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -2664,7 +1923,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DL Domain Adaptation Experiments')
     parser.add_argument('--data-root', type=str,
                         default=os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                             '..', '..', '..', 'wifi_sensing_data'),
+                                             '..', '..', 'data'),
                         help='Root folder containing dataset subfolders')
     parser.add_argument('--window', type=int, default=300, help='Window length')
     parser.add_argument('--sr', type=int, default=150, help='Guaranteed sample rate')
@@ -2679,24 +1938,17 @@ if __name__ == '__main__':
     parser.add_argument('--n-folds', type=int, default=None,
                         help='Number of CV folds (auto if not set)')
     parser.add_argument('--verbose', action='store_true')
-    parser.add_argument('--vis', action='store_true',
-                        help='Skip training — load saved CSV results and show plots/tables')
-    parser.add_argument('--results-dir', type=str, default=None,
-                        help='Directory containing result CSVs (default: ../results)')
     args = parser.parse_args()
 
-    if args.vis:
-        visualize_dl_results(results_dir=args.results_dir, save=True)
-    else:
-        run_dl_experiment(
-            data_root=os.path.abspath(args.data_root),
-            window_len=args.window,
-            guaranteed_sr=args.sr,
-            epochs=args.epochs,
-            lr=args.lr,
-            model_size=args.model_size,
-            verbose=args.verbose,
-            n_seeds=args.n_seeds,
-            cv_mode=args.cv,
-            n_folds=args.n_folds,
-        )
+    run_dl_experiment(
+        data_root=os.path.abspath(args.data_root),
+        window_len=args.window,
+        guaranteed_sr=args.sr,
+        epochs=args.epochs,
+        lr=args.lr,
+        model_size=args.model_size,
+        verbose=args.verbose,
+        n_seeds=args.n_seeds,
+        cv_mode=args.cv,
+        n_folds=args.n_folds,
+    )
