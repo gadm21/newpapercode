@@ -1173,6 +1173,326 @@ h3 {
 }
 
 /* ============================================
+   Advanced Animation Styles
+   ============================================ */
+
+/* Particle Canvas */
+.particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+.paper-header > *:not(.particle-canvas) {
+    position: relative;
+    z-index: 2;
+}
+
+/* Glowing Cursor */
+.glowing-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(49, 130, 206, 0.8) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: screen;
+}
+
+.glowing-cursor.cursor-hover {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, rgba(72, 187, 120, 0.6) 0%, transparent 70%);
+}
+
+/* Scroll Progress Bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--highlight-color), var(--accent-color), #805ad5);
+    z-index: 10000;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 10px rgba(72, 187, 120, 0.5);
+}
+
+/* Ripple Effect */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0);
+    animation: rippleEffect 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes rippleEffect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Active Pipeline Step */
+.pipeline-step.active-step {
+    background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%) !important;
+    border-color: var(--accent-color) !important;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(49, 130, 206, 0.3);
+}
+
+.pipeline-step {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+}
+
+/* Enhanced Card Hover */
+.card {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Branch Hover Effects */
+.branch {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+}
+
+.branch:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Figure Item Enhanced */
+.figure-item {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+}
+
+.figure-item:hover {
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.figure-item img {
+    transition: all 0.4s ease;
+}
+
+.figure-item:hover img {
+    filter: brightness(1.05) contrast(1.05);
+}
+
+/* Table Row Enhanced */
+.data-table tbody tr {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.data-table tbody tr:hover {
+    background: linear-gradient(90deg, rgba(49, 130, 206, 0.05), rgba(72, 187, 120, 0.05));
+}
+
+/* Number Best Glow */
+.number.best {
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+/* Layer Box Enhanced */
+.layer-box {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+}
+
+/* Finding Cards */
+.finding {
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+}
+
+.finding:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Bar Animation */
+.animate-bar {
+    transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.animate-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% { left: 100%; }
+}
+
+/* Smooth Scroll Reveal */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Staggered Row Animation */
+.animate-row {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: rowSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: var(--row-delay, 0s);
+}
+
+@keyframes rowSlideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.diagram-block {
+    animation: float 4s ease-in-out infinite;
+}
+
+.diagram-block.tx { animation-delay: 0s; }
+.diagram-block.env { animation-delay: 0.5s; }
+.diagram-block.rx { animation-delay: 1s; }
+
+/* Pulse Animation for Icons */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.card-icon, .finding-icon, .step-icon {
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Gradient Text Animation */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.paper-title {
+    background: linear-gradient(90deg, #fff, #90cdf4, #fff, #c6f6d5, #fff);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 8s ease infinite;
+}
+
+/* Equation Box Glow */
+.equation-box {
+    transition: all 0.4s ease;
+}
+
+.equation-box:hover {
+    box-shadow: 0 0 40px rgba(44, 82, 130, 0.3);
+    transform: scale(1.02);
+}
+
+/* Wave Canvas */
+.wave-canvas {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* Data Packet Animation */
+.data-packet {
+    position: absolute;
+    font-size: 20px;
+    animation: packetFlow 3s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes packetFlow {
+    0% { left: 0; opacity: 1; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { left: 100%; opacity: 0; transform: scale(0.5); }
+}
+
+/* Table Container 3D */
+.table-container {
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+}
+
+/* Highlight Row Glow */
+.highlight-row {
+    position: relative;
+}
+
+.highlight-row::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(72, 187, 120, 0.1), transparent);
+    animation: highlightPulse 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes highlightPulse {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Modal Enhanced */
+.modal {
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+/* Footer Gradient */
+.paper-footer {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1a202c 100%);
+}
+
+/* ============================================
    Responsive
    ============================================ */
 
@@ -1202,5 +1522,9 @@ h3 {
         position: static;
         writing-mode: horizontal-tb;
         margin-top: 10px;
+    }
+    
+    .glowing-cursor {
+        display: none;
     }
 }
