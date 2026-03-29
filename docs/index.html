@@ -6,16 +6,22 @@
     <title>Efficient WiFi Sensing-Based Human Activity Recognition</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="paper-container">
         <!-- Header -->
         <header class="paper-header">
+            <div class="hero-badges animate-fade-in-delay">
+                <a href="#" class="badge badge-paper">📄 Paper</a>
+                <a href="https://huggingface.co/gadgadgad" target="_blank" rel="noopener" class="badge badge-hf">🤗 HuggingFace</a>
+                <a href="https://github.com/gadgadgad/wifi-sensing" target="_blank" rel="noopener" class="badge badge-github">⚡ GitHub</a>
+            </div>
             <h1 class="paper-title animate-slide-up">
                 Efficient WiFi Sensing-Based Human Activity Recognition With WiFi-Enabled Access Points
             </h1>
@@ -39,6 +45,41 @@
             <p>
                 The ubiquitous availability of WiFi-enabled devices in our homes welcomes rapid adoption of WiFi sensing technology for smart home applications. WiFi sensing is a privacy-preserving, resource-aware sensing technology that requires no additional deployment cost and overcomes limitations of traditional sensing modalities. In this study we adopt a <strong>two-phase evaluation framework</strong> for WiFi sensing across multiple smart home applications—room occupancy detection, human activity recognition, and indoor localization. In <em>Phase 1</em> (feature representation), we compare our proposed <strong>rolling-variance transform</strong> against raw amplitude and SHARP-based phase sanitisation, showing that rolling variance achieves up to <span class="highlight">1.6× higher accuracy</span> without requiring phase information. In <em>Phase 2</em> (learning model), we compare traditional ML and deep learning architectures, demonstrating that DL models—particularly <strong>1D-CNN</strong>—best exploit the temporal structure in rolling-variance features.
             </p>
+            <!-- Dataset Cards -->
+            <div class="dataset-cards-grid">
+                <a href="https://huggingface.co/datasets/gadgadgad/HomeHAR" target="_blank" rel="noopener" class="dataset-card">
+                    <div class="dataset-card-icon">🤗</div>
+                    <div class="dataset-card-text">
+                        <span class="dataset-card-title">Home HAR</span>
+                        <span class="dataset-card-sub">7-class activity recognition · 2.7M packets</span>
+                    </div>
+                    <div class="dataset-card-arrow">→</div>
+                </a>
+                <a href="https://huggingface.co/datasets/gadgadgad/HomeOccupation" target="_blank" rel="noopener" class="dataset-card">
+                    <div class="dataset-card-icon">🤗</div>
+                    <div class="dataset-card-text">
+                        <span class="dataset-card-title">Home Occupation</span>
+                        <span class="dataset-card-sub">3-class occupancy detection · 1.7M packets</span>
+                    </div>
+                    <div class="dataset-card-arrow">→</div>
+                </a>
+                <a href="https://huggingface.co/datasets/gadgadgad/OfficeHAR" target="_blank" rel="noopener" class="dataset-card">
+                    <div class="dataset-card-icon">🤗</div>
+                    <div class="dataset-card-text">
+                        <span class="dataset-card-title">Office HAR</span>
+                        <span class="dataset-card-sub">4-class activity recognition · 0.8M packets</span>
+                    </div>
+                    <div class="dataset-card-arrow">→</div>
+                </a>
+                <a href="https://huggingface.co/datasets/gadgadgad/OfficeLocalization" target="_blank" rel="noopener" class="dataset-card">
+                    <div class="dataset-card-icon">🤗</div>
+                    <div class="dataset-card-text">
+                        <span class="dataset-card-title">Office Localization</span>
+                        <span class="dataset-card-sub">4-class indoor localization · 1.6M packets</span>
+                    </div>
+                    <div class="dataset-card-arrow">→</div>
+                </a>
+            </div>
         </section>
 
         <!-- Two-column layout -->
@@ -95,50 +136,70 @@
                         </div>
                     </div>
                     
+                    <!-- Interactive Processing Pipeline -->
                     <div class="pipeline-section">
                         <h3>Processing Pipeline</h3>
-                        <div class="pipeline">
-                            <div class="pipeline-step animate-pop" style="--delay: 0.1s">
-                                <span class="step-icon">📦</span>
-                                <span>CSI<br>64 sub.</span>
+                        <div class="pipeline-interactive">
+                            <div class="pipeline-steps">
+                                <div class="pipeline-step" data-step="csi">
+                                    <span class="step-icon">📦</span>
+                                    <span>CSI<br>64 sub.</span>
+                                </div>
+                                <div class="pipeline-arrow">→</div>
+                                <div class="pipeline-step" data-step="uart">
+                                    <span class="step-icon">💻</span>
+                                    <span>Host<br>UART</span>
+                                </div>
+                                <div class="pipeline-arrow">→</div>
+                                <div class="pipeline-step" data-step="csv">
+                                    <span class="step-icon">📄</span>
+                                    <span>CSV<br>Storage</span>
+                                </div>
+                                <div class="pipeline-arrow">→</div>
+                                <div class="pipeline-step" data-step="lltf">
+                                    <span class="step-icon">🔍</span>
+                                    <span>Select<br>52 LLTF</span>
+                                </div>
+                                <div class="pipeline-arrow">→</div>
+                                <div class="pipeline-step" data-step="resample">
+                                    <span class="step-icon">⏱️</span>
+                                    <span>Resample<br>150 Hz</span>
+                                </div>
                             </div>
-                            <div class="pipeline-arrow">→</div>
-                            <div class="pipeline-step animate-pop" style="--delay: 0.2s">
-                                <span class="step-icon">💻</span>
-                                <span>Host<br>UART</span>
-                            </div>
-                            <div class="pipeline-arrow">→</div>
-                            <div class="pipeline-step animate-pop" style="--delay: 0.3s">
-                                <span class="step-icon">📄</span>
-                                <span>CSV<br>Storage</span>
-                            </div>
-                            <div class="pipeline-arrow">→</div>
-                            <div class="pipeline-step animate-pop" style="--delay: 0.4s">
-                                <span class="step-icon">🔍</span>
-                                <span>Select<br>52 LLTF</span>
-                            </div>
-                            <div class="pipeline-arrow">→</div>
-                            <div class="pipeline-step animate-pop" style="--delay: 0.5s">
-                                <span class="step-icon">⏱️</span>
-                                <span>Resample<br>150 Hz</span>
+                            <!-- Process visualization panel -->
+                            <div class="process-viz-panel" id="pipelineViz">
+                                <div class="process-viz-placeholder">
+                                    <span>Hover over a pipeline step to see its visualization</span>
+                                </div>
+                                <canvas id="pipelineCanvas" width="400" height="150"></canvas>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Interactive Feature Representations -->
                     <div class="feature-branches">
                         <h3>Feature Representations</h3>
-                        <div class="branches">
-                            <div class="branch sharp animate-slide-left">
-                                <div class="branch-header">SHARP Sanitize</div>
-                                <div class="branch-desc">Phase → Amplitude</div>
+                        <div class="branches-interactive">
+                            <div class="branches-row">
+                                <div class="branch" data-feature="sharp">
+                                    <div class="branch-header">SHARP Sanitize</div>
+                                    <div class="branch-desc">Phase → Amplitude</div>
+                                </div>
+                                <div class="branch highlight-branch" data-feature="rollvar">
+                                    <div class="branch-header">Rolling Variance ⭐</div>
+                                    <div class="branch-desc">W ∈ {20, 200, 2000}</div>
+                                </div>
+                                <div class="branch" data-feature="rawamp">
+                                    <div class="branch-header">Raw Amplitude</div>
+                                    <div class="branch-desc">52 subcarriers</div>
+                                </div>
                             </div>
-                            <div class="branch rolling-var animate-slide-up highlight-branch">
-                                <div class="branch-header">Rolling Variance ⭐</div>
-                                <div class="branch-desc">W ∈ {20, 200, 2000}</div>
-                            </div>
-                            <div class="branch raw-amp animate-slide-right">
-                                <div class="branch-header">Raw Amplitude</div>
-                                <div class="branch-desc">52 subcarriers</div>
+                            <!-- Feature visualization panel -->
+                            <div class="process-viz-panel" id="featureViz">
+                                <div class="process-viz-placeholder">
+                                    <span>Hover over a feature method to see its transformation</span>
+                                </div>
+                                <canvas id="featureCanvas" width="400" height="150"></canvas>
                             </div>
                         </div>
                     </div>
@@ -165,8 +226,12 @@
             <h2 class="section-title animate-on-scroll">Experimental Results</h2>
             
             <!-- Table 1: Dataset Overview -->
-            <div class="table-container animate-on-scroll">
-                <h3>Table I: Dataset Overview and Collection Summary</h3>
+            <details class="table-collapse" open>
+                <summary class="table-collapse-header">
+                    <span class="collapse-icon">▼</span>
+                    <span>Table I: Dataset Overview and Collection Summary</span>
+                </summary>
+                <div class="table-container animate-on-scroll">
                 <table class="data-table animate-table">
                     <thead>
                         <tr>
@@ -254,10 +319,15 @@
                     </tbody>
                 </table>
             </div>
+            </details>
 
             <!-- Table 2: SHARP Comparison -->
-            <div class="table-container animate-on-scroll">
-                <h3>Table II: Communication Setup Parameters Comparison</h3>
+            <details class="table-collapse">
+                <summary class="table-collapse-header">
+                    <span class="collapse-icon">▼</span>
+                    <span>Table II: Communication Setup Parameters Comparison</span>
+                </summary>
+                <div class="table-container animate-on-scroll">
                 <table class="data-table comparison-table animate-table">
                     <thead>
                         <tr>
@@ -295,10 +365,15 @@
                     </tbody>
                 </table>
             </div>
+            </details>
 
             <!-- Table 3: Dataset Characterization -->
-            <div class="table-container animate-on-scroll">
-                <h3>Table III: Dataset Characterization</h3>
+            <details class="table-collapse">
+                <summary class="table-collapse-header">
+                    <span class="collapse-icon">▼</span>
+                    <span>Table III: Dataset Characterization</span>
+                </summary>
+                <div class="table-container animate-on-scroll">
                 <table class="data-table animate-table">
                     <thead>
                         <tr>
@@ -357,13 +432,18 @@
                     </tbody>
                 </table>
             </div>
+            </details>
         </section>
 
         <!-- ML Results Table -->
         <section class="results-section animate-on-scroll">
             <h2>Phase 1 Results: Feature Representation</h2>
+            <details class="table-collapse" open>
+                <summary class="table-collapse-header">
+                    <span class="collapse-icon">▼</span>
+                    <span>Table IV: Full ML Results (Best accuracy per configuration)</span>
+                </summary>
             <div class="table-container full-width">
-                <h3>Table IV: Full ML Results (Best accuracy per configuration)</h3>
                 <div class="table-scroll">
                     <table class="data-table results-table animate-table">
                         <thead>
@@ -439,13 +519,18 @@
                     </table>
                 </div>
             </div>
+            </details>
         </section>
 
         <!-- DL Results Table -->
         <section class="results-section animate-on-scroll">
             <h2>Phase 2 Results: Deep Learning</h2>
+            <details class="table-collapse" open>
+                <summary class="table-collapse-header">
+                    <span class="collapse-icon">▼</span>
+                    <span>Table V: Full DL Results (Rolling-variance pipeline)</span>
+                </summary>
             <div class="table-container full-width">
-                <h3>Table V: Full DL Results (Rolling-variance pipeline)</h3>
                 <div class="table-scroll">
                     <table class="data-table dl-table animate-table">
                         <thead>
@@ -535,6 +620,7 @@
                     </table>
                 </div>
             </div>
+            </details>
         </section>
 
         <!-- Animated Bar Charts -->
@@ -622,32 +708,37 @@
             </div>
         </section>
 
-        <!-- PCA Visualization -->
-        <section class="figures-section animate-on-scroll">
-            <h2>Dataset Visualization</h2>
-            <p class="section-desc">2D PCA projections of all CSI and reference datasets, colored by class label. Click to enlarge.</p>
-            <div class="figure-grid">
-                <div class="figure-item animate-figure" style="--delay: 0.1s">
-                    <img src="assets/pca_home_har.png" alt="PCA Home HAR" class="zoomable">
-                    <p class="fig-caption">Home HAR (Sil. −0.16)</p>
+        <!-- ═══════════════════════════════════════════════════════
+             RESULTS DASHBOARD — Native data rendered from CSVs
+             ═══════════════════════════════════════════════════════ -->
+        <section class="dashboard-section animate-on-scroll">
+            <h2>Results Dashboard</h2>
+            <p class="section-desc">All metrics rendered natively from experimental CSVs. Best result per configuration highlighted.</p>
+
+            <!-- Row 1: Pipeline Comparison + Architecture Comparison -->
+            <div class="dashboard-row">
+                <div class="chart-card animate-on-scroll">
+                    <div class="chart-card-header">
+                        <span class="chart-tag">Fig. 6 — Reproduced</span>
+                        <h3>Feature Pipeline Comparison</h3>
+                        <p class="chart-desc">Best accuracy (max over window lengths &amp; models) per feature pipeline. Rolling variance <span class="highlight-text">outperforms</span> phase-dependent methods on the hardest tasks.</p>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chartPipeline"></canvas>
+                    </div>
                 </div>
-                <div class="figure-item animate-figure" style="--delay: 0.2s">
-                    <img src="assets/pca_home_occupation.png" alt="PCA Home Occupation" class="zoomable">
-                    <p class="fig-caption">Home Occupation (Sil. 0.41)</p>
-                </div>
-                <div class="figure-item animate-figure" style="--delay: 0.3s">
-                    <img src="assets/pca_office_har.png" alt="PCA Office HAR" class="zoomable">
-                    <p class="fig-caption">Office HAR (Sil. 0.41)</p>
-                </div>
-                <div class="figure-item animate-figure" style="--delay: 0.4s">
-                    <img src="assets/pca_office_localization.png" alt="PCA Office Localization" class="zoomable">
-                    <p class="fig-caption">Office Localization (Sil. 0.80)</p>
+                <div class="chart-card animate-on-scroll">
+                    <div class="chart-card-header">
+                        <span class="chart-tag">DL Results</span>
+                        <h3>DL Architecture Comparison</h3>
+                        <p class="chart-desc">Best accuracy per DL architecture across all rolling-variance windows and window lengths. Conv1D leads on HAR; CNN-LSTM tops localization.</p>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chartArch"></canvas>
+                    </div>
                 </div>
             </div>
-            <div class="figure-full animate-on-scroll">
-                <img src="assets/pca_2d_scatter.png" alt="All PCA Projections" class="zoomable">
-                <p class="figure-caption"><strong>Figure 2:</strong> Complete 2D PCA projections comparing CSI datasets with reference benchmarks (Iris, MNIST, CIFAR).</p>
-            </div>
+
         </section>
 
         <!-- 1D-CNN Architecture -->
@@ -887,27 +978,41 @@
 
         <!-- Footer -->
         <footer class="paper-footer">
-            <p class="contact">Contact: <a href="mailto:ggad@uwo.ca">ggad@uwo.ca</a></p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">📄 Paper</a>
+                <span class="footer-sep">·</span>
+                <a href="https://huggingface.co/gadgadgad" target="_blank" rel="noopener" class="footer-hf">🤗 HuggingFace</a>
+                <span class="footer-sep">·</span>
+                <a href="https://github.com/gadgadgad/wifi-sensing" target="_blank" rel="noopener" class="footer-link">⚡ GitHub</a>
+                <span class="footer-sep">·</span>
+                <a href="mailto:ggad@uwo.ca" class="footer-email">ggad@uwo.ca</a>
+            </div>
+            <p class="footer-copy">© 2026 Gad Gad et al. — Western University</p>
         </footer>
     </div>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="modalImg">
-        <div id="caption"></div>
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
+        <button class="lb-close" aria-label="Close">✕</button>
+        <img id="lb-img" src="" alt="">
+        <p id="lb-cap"></p>
     </div>
 
     <script src="script.js"></script>
+    <!-- clf-tab wiring (script.js handles charts) -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "$", right: "$", display: false}
-                ]
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.clf-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const grp = btn.dataset.group;
+          document.querySelectorAll('.clf-tab').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.clf-tab-content').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('grp-' + grp).classList.add('active');
         });
+      });
+
+    });
     </script>
 </body>
 </html>
