@@ -3,7 +3,7 @@ language:
 - en
 license: cc-by-4.0
 task_categories:
-- time-series-classification
+- time-series-forecasting
 tags:
 - wifi-sensing
 - csi
@@ -85,22 +85,6 @@ Each CSV file contains one row per received CSI packet with the following column
 | `first_word` | Header word |
 | `data` | Raw CSI data as `[I₀, Q₀, I₁, Q₁, ..., I₆₃, Q₆₃]` — 128 signed integers representing in-phase and quadrature components for 64 subcarriers |
 
-### Extracting CSI Amplitude
-
-```python
-import numpy as np
-
-# Parse the 'data' column (strip brackets, split by comma)
-raw = "[0,0,-5,12,-6,14,...]"  # example
-iq = np.array([int(x) for x in raw.strip('"[]').split(',')])
-iq = iq.reshape(64, 2)  # 64 subcarriers × (I, Q)
-amplitude = np.sqrt(iq[:, 0]**2 + iq[:, 1]**2)  # |H(f)|
-
-# Select 52 LLTF data subcarriers (indices 6–31 and 33–58)
-lltf_mask = list(range(6, 32)) + list(range(33, 59))
-csi_amplitude = amplitude[lltf_mask]  # shape: (52,)
-```
-
 ## Recommended Preprocessing Pipeline
 
 1. **Load** CSV and parse the `data` column into complex I/Q arrays
@@ -122,17 +106,6 @@ Best results from the paper using rolling-variance features (W=200):
 | PCA + KNN | 85.6% |
 
 Office HAR demonstrates strong performance across all classifiers. The 4-class problem in an office setting is well-suited for practical deployment in workplace occupancy analytics and smart building management.
-
-## Citation
-
-```bibtex
-@article{gad2026wifisensing,
-  title={WiFi Sensing-Based Human Activity Recognition For Smart Home Applications Using Commodity Access Points},
-  author={Gad, Gad and Batool, Iqra and Fouda, Mostafa M. and Verma, Shikhar and Fadlullah, Zubair Md},
-  journal={IEEE},
-  year={2026}
-}
-```
 
 ## License
 
