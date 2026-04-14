@@ -18,9 +18,9 @@
         <!-- Header -->
         <header class="paper-header">
             <div class="hero-badges animate-fade-in-delay">
-                <a href="#" class="badge badge-paper">📄 Paper</a>
+                <a href="IEEE_2026__wifi_sensing_.pdf" download class="badge badge-paper">📄 Paper (PDF)</a>
                 <a href="https://huggingface.co/gadgadgad" target="_blank" rel="noopener" class="badge badge-hf">🤗 HuggingFace</a>
-                <a href="https://github.com/gadgadgad/wifi-sensing" target="_blank" rel="noopener" class="badge badge-github">⚡ GitHub</a>
+                <a href="https://github.com/gadm21/WifiSensingESP32HAR" target="_blank" rel="noopener" class="badge badge-github">⚡ GitHub</a>
             </div>
             <h1 class="paper-title animate-slide-up">
                 Efficient WiFi Sensing-Based Human Activity Recognition With WiFi-Enabled Access Points
@@ -36,6 +36,28 @@
                 <p><sup>1</sup>Department of Computer Science, Western University, London, ON, Canada</p>
                 <p><sup>2</sup>Department of Electrical and Computer Engineering, Idaho State University, Pocatello, ID, USA</p>
                 <p><sup>3</sup>School of Informatics, Kochi University of Technology, Kochi, Japan</p>
+            </div>
+            <div class="hero-stats-strip animate-fade-in-delay-2">
+                <div class="hero-stat-item">
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Datasets</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="stat-value">8.8M</span>
+                    <span class="stat-label">CSI Packets</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="stat-value">100×</span>
+                    <span class="stat-label">Faster</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="stat-value">52.9%</span>
+                    <span class="stat-label">7-class HAR</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="stat-value">96.7%</span>
+                    <span class="stat-label">Localization</span>
+                </div>
             </div>
         </header>
 
@@ -82,33 +104,40 @@
             </div>
         </section>
 
-        <!-- Two-column layout -->
-        <div class="two-column">
-            <!-- Key Contributions -->
-            <section class="contributions animate-on-scroll">
-                <h2>Key Contributions</h2>
-                <div class="contribution-cards">
-                    <div class="card animate-card" style="--delay: 0.1s">
-                        <div class="card-icon">📊</div>
-                        <h3>Rolling-Variance Transform</h3>
-                        <p>Time-invariant feature extraction from CSI amplitude alone, eliminating phase information requirements.</p>
-                    </div>
-                    <div class="card animate-card" style="--delay: 0.2s">
-                        <div class="card-icon">⚡</div>
-                        <h3>100× Faster Processing</h3>
-                        <p>Compared to SHARP-based phase sanitisation with superior accuracy.</p>
-                    </div>
-                    <div class="card animate-card" style="--delay: 0.3s">
-                        <div class="card-icon">📁</div>
-                        <h3>Open-Source Datasets</h3>
-                        <p>Multi-task labeled CSI datasets from ESP32-C6 across home and office environments.</p>
-                    </div>
+        <!-- Key Contributions (full-width, before system architecture) -->
+        <section class="contributions contributions-full animate-on-scroll">
+            <h2>Key Contributions</h2>
+            <div class="contribution-cards contribution-cards-grid">
+                <div class="card animate-card contribution-numbered" style="--delay: 0.1s">
+                    <span class="card-number">01</span>
+                    <div class="card-icon">📊</div>
+                    <h3>Rolling-Variance Transform</h3>
+                    <p>A novel time-invariant feature representation extracted from CSI amplitude alone — no phase information needed. Achieves up to <strong>1.6× higher accuracy</strong> than raw amplitude on challenging HAR tasks.</p>
                 </div>
-            </section>
+                <div class="card animate-card contribution-numbered" style="--delay: 0.2s">
+                    <span class="card-number">02</span>
+                    <div class="card-icon">⚡</div>
+                    <h3>100× Faster Processing</h3>
+                    <p>Rolling variance computes in <strong>0.03s</strong> vs. SHARP's 3.5s — a 100× speedup — while delivering superior accuracy across all evaluated tasks.</p>
+                </div>
+                <div class="card animate-card contribution-numbered" style="--delay: 0.3s">
+                    <span class="card-number">03</span>
+                    <div class="card-icon">🧠</div>
+                    <h3>Two-Phase Evaluation</h3>
+                    <p>Systematic comparison of feature representations (Phase 1) and learning architectures (Phase 2) across <strong>4 datasets</strong> and <strong>3 smart-home tasks</strong>.</p>
+                </div>
+                <div class="card animate-card contribution-numbered" style="--delay: 0.4s">
+                    <span class="card-number">04</span>
+                    <div class="card-icon">📁</div>
+                    <h3>Open-Source Datasets & Tools</h3>
+                    <p>Four labeled CSI datasets from ESP32-C6 across home and office environments, plus a real-time collection tool — all publicly released.</p>
+                </div>
+            </div>
+        </section>
 
-            <!-- System Model Figure -->
-            <section class="figure-section animate-on-scroll">
-                <h2>System Architecture</h2>
+        <!-- System Architecture (now full-width, after contributions) -->
+        <section class="figure-section animate-on-scroll">
+            <h2>System Architecture</h2>
                 <div class="system-diagram">
                     <div class="diagram-row">
                         <div class="diagram-block tx animate-pulse-glow">
@@ -206,7 +235,6 @@
                 </div>
                 <p class="figure-caption"><strong>Figure 1:</strong> End-to-end system overview showing signal model, data pipeline, and three preprocessing approaches.</p>
             </section>
-        </div>
 
         <!-- Rolling Variance Equation -->
         <section class="equation-section animate-on-scroll">
@@ -979,11 +1007,11 @@
         <!-- Footer -->
         <footer class="paper-footer">
             <div class="footer-links">
-                <a href="#" class="footer-link">📄 Paper</a>
+                <a href="IEEE_2026__wifi_sensing_.pdf" download class="footer-link">📄 Paper (PDF)</a>
                 <span class="footer-sep">·</span>
                 <a href="https://huggingface.co/gadgadgad" target="_blank" rel="noopener" class="footer-hf">🤗 HuggingFace</a>
                 <span class="footer-sep">·</span>
-                <a href="https://github.com/gadgadgad/wifi-sensing" target="_blank" rel="noopener" class="footer-link">⚡ GitHub</a>
+                <a href="https://github.com/gadm21/WifiSensingESP32HAR" target="_blank" rel="noopener" class="footer-link">⚡ GitHub</a>
                 <span class="footer-sep">·</span>
                 <a href="mailto:ggad@uwo.ca" class="footer-email">ggad@uwo.ca</a>
             </div>

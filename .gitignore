@@ -1,4 +1,9 @@
-data/
+;./data/
 __pycache__/
 *.pyc
 src/live/*.csv
+csi_studio_data/
+csi_standardized/
+*.npz
+*.meta.json
+data/*

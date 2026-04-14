@@ -140,22 +140,14 @@ def benchmark_preprocessing(data_root, n_samples=10000, output_dir=None):
         print(f"  Rolling Variance (W={w:>4d}):  wall={wall:>8.4f}s  "
               f"cpu={cpu:>8.4f}s")
 
-    # Sanitization (use smaller sample for Lasso - it's very slow)
-    san_samples = min(n_samples, 500)  # Lasso is O(N*K*P) per packet
-    real_sub = real[:san_samples]
-    imag_sub = imag[:san_samples]
-    _, wall, cpu = measure_resource(benchmark_sanitization, real_sub, imag_sub)
-    # Scale time estimate to full n_samples
-    scale = n_samples / san_samples
-    row = {'method': 'SHARP_Sanitization', 'n_samples': san_samples,
-           'wall_time_s': wall, 'cpu_time_s': cpu,
-           'estimated_wall_full': round(wall * scale, 2),
-           'estimated_cpu_full': round(cpu * scale, 2)}
+    # Sanitization — run on ALL n_samples (no estimation)
+    print(f"  SHARP Sanitization ({n_samples} pkts) — this may take a while...")
+    _, wall, cpu = measure_resource(benchmark_sanitization, real, imag)
+    row = {'method': 'SHARP_Sanitization', 'n_samples': n_samples,
+           'wall_time_s': wall, 'cpu_time_s': cpu}
     results.append(row)
-    print(f"  SHARP Sanitization ({san_samples} pkts): wall={wall:>8.4f}s  "
+    print(f"  SHARP Sanitization ({n_samples} pkts): wall={wall:>8.4f}s  "
           f"cpu={cpu:>8.4f}s")
-    print(f"    (estimated for {n_samples} pkts: wall~{wall*scale:.1f}s  "
-          f"cpu~{cpu*scale:.1f}s)")
 
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
@@ -171,11 +163,14 @@ def benchmark_preprocessing(data_root, n_samples=10000, output_dir=None):
 
 
 # =============================================================================
-# Phase 2: DL vs ML vs PCA learning categories
+# Phase 2: ML vs DL learning categories (separate train / inference)
 # =============================================================================
 def benchmark_learning(data_root, window_len=300, guaranteed_sr=150,
                        var_window=20, output_dir=None):
-    """Benchmark training time and resources for PCA, ML, and DL pipelines.
+    """Benchmark training and inference time for ML and DL pipelines.
+
+    Uses Home HAR dataset.  Reports wall-clock and CPU time separately
+    for training and inference.
 
     Parameters
     ----------
@@ -198,9 +193,9 @@ def benchmark_learning(data_root, window_len=300, guaranteed_sr=150,
 
     set_global_seed(42)
 
-    # Load one dataset for benchmarking (Office HAR - moderate size)
-    dataset_dirs = ['office_har_data', 'home_occupation_data',
-                    'office_localization_data', 'home_har_data']
+    # Load Home HAR dataset for benchmarking
+    dataset_dirs = ['home_har_data', 'home_occupation_data',
+                    'office_har_data', 'office_localization_data']
     train_ds, test_ds = None, None
     ds_name = None
     for dname in dataset_dirs:
@@ -235,114 +230,96 @@ def benchmark_learning(data_root, window_len=300, guaranteed_sr=150,
 
     results = []
 
-    # --- PCA Baseline ---
-    from sklearn.decomposition import PCA
-    from sklearn.neighbors import KNeighborsClassifier
-
-    def run_pca():
-        pca = PCA(n_components=3)
-        X_tr_pca = pca.fit_transform(X_tr)
-        X_te_pca = pca.transform(X_te)
-        knn = KNeighborsClassifier(n_neighbors=5)
-        knn.fit(X_tr_pca, y_tr)
-        preds = knn.predict(X_te_pca)
-        from sklearn.metrics import accuracy_score
-        return accuracy_score(y_te, preds)
-
-    acc, wall, cpu = measure_resource(run_pca)
-    results.append({'category': 'PCA+KNN', 'dataset': ds_name,
-                    'wall_time_s': wall, 'cpu_time_s': cpu,
-                    'accuracy': round(acc, 4)})
-    print(f"  PCA+KNN:     wall={wall:>8.4f}s  cpu={cpu:>8.4f}s  "
-          f"acc={acc:.4f}")
-
     # --- ML: RandomForest ---
     from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import accuracy_score
 
-    def run_rf():
-        rf = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
-        rf.fit(X_tr, y_tr)
-        preds = rf.predict(X_te)
-        from sklearn.metrics import accuracy_score
-        return accuracy_score(y_te, preds)
-
-    acc, wall, cpu = measure_resource(run_rf)
-    results.append({'category': 'ML_RandomForest', 'dataset': ds_name,
-                    'wall_time_s': wall, 'cpu_time_s': cpu,
+    rf = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+    _, train_wall, train_cpu = measure_resource(rf.fit, X_tr, y_tr)
+    _, infer_wall, infer_cpu = measure_resource(rf.predict, X_te)
+    acc = accuracy_score(y_te, rf.predict(X_te))
+    results.append({'category': 'RandomForest', 'dataset': ds_name,
+                    'train_wall_s': train_wall, 'train_cpu_s': train_cpu,
+                    'infer_wall_s': infer_wall, 'infer_cpu_s': infer_cpu,
                     'accuracy': round(acc, 4)})
-    print(f"  RF:          wall={wall:>8.4f}s  cpu={cpu:>8.4f}s  "
-          f"acc={acc:.4f}")
+    print(f"  RF:          train_wall={train_wall:>8.4f}s  train_cpu={train_cpu:>8.4f}s  "
+          f"infer_wall={infer_wall:>8.4f}s  infer_cpu={infer_cpu:>8.4f}s  acc={acc:.4f}")
 
     # --- ML: XGBoost ---
     from xgboost import XGBClassifier
 
-    def run_xgb():
-        xgb = XGBClassifier(n_estimators=100, max_depth=3, random_state=42,
-                            n_jobs=-1, verbosity=0)
-        xgb.fit(X_tr, y_tr)
-        preds = xgb.predict(X_te)
-        from sklearn.metrics import accuracy_score
-        return accuracy_score(y_te, preds)
-
-    acc, wall, cpu = measure_resource(run_xgb)
-    results.append({'category': 'ML_XGBoost', 'dataset': ds_name,
-                    'wall_time_s': wall, 'cpu_time_s': cpu,
+    xgb = XGBClassifier(n_estimators=500, max_depth=3, random_state=42,
+                        n_jobs=-1, verbosity=0)
+    _, train_wall, train_cpu = measure_resource(xgb.fit, X_tr, y_tr)
+    _, infer_wall, infer_cpu = measure_resource(xgb.predict, X_te)
+    acc = accuracy_score(y_te, xgb.predict(X_te))
+    results.append({'category': 'XGBoost', 'dataset': ds_name,
+                    'train_wall_s': train_wall, 'train_cpu_s': train_cpu,
+                    'infer_wall_s': infer_wall, 'infer_cpu_s': infer_cpu,
                     'accuracy': round(acc, 4)})
-    print(f"  XGBoost:     wall={wall:>8.4f}s  cpu={cpu:>8.4f}s  "
-          f"acc={acc:.4f}")
+    print(f"  XGBoost:     train_wall={train_wall:>8.4f}s  train_cpu={train_cpu:>8.4f}s  "
+          f"infer_wall={infer_wall:>8.4f}s  infer_cpu={infer_cpu:>8.4f}s  acc={acc:.4f}")
 
-    # --- DL: Conv1D ---
+    # --- DL: 1D-CNN ---
     import torch
-    import torch.nn as nn
-    import torch.nn.functional as F
     from dl import make_conv1d_model, train_model
 
-    def run_conv1d():
-        model = make_conv1d_model(
-            n_subcarriers=52, window_len=window_len, n_classes=n_classes,
-            config='small', use_batch_norm=False, use_whitening=False)
-        trained_model, info = train_model(
+    model = make_conv1d_model(
+        n_subcarriers=52, window_len=window_len, n_classes=n_classes,
+        config='small', use_batch_norm=False, use_whitening=False)
+
+    def _train_conv1d():
+        return train_model(
             model, X_tr, y_tr, X_te, X_te, y_te,
             epochs=50, lr=1e-3, batch_size=64,
             use_coral=False, verbose=False)
+
+    (trained_model, _info), train_wall, train_cpu = measure_resource(_train_conv1d)
+
+    def _infer_conv1d():
         device = next(trained_model.parameters()).device
         with torch.no_grad():
             logits = trained_model.predict(torch.FloatTensor(X_te).to(device))
-        preds = logits.argmax(dim=1).cpu().numpy()
-        from sklearn.metrics import accuracy_score
-        return accuracy_score(y_te, preds)
+        return logits.argmax(dim=1).cpu().numpy()
 
-    acc, wall, cpu = measure_resource(run_conv1d)
-    results.append({'category': 'DL_Conv1D', 'dataset': ds_name,
-                    'wall_time_s': wall, 'cpu_time_s': cpu,
+    preds, infer_wall, infer_cpu = measure_resource(_infer_conv1d)
+    acc = accuracy_score(y_te, preds)
+    results.append({'category': '1D-CNN', 'dataset': ds_name,
+                    'train_wall_s': train_wall, 'train_cpu_s': train_cpu,
+                    'infer_wall_s': infer_wall, 'infer_cpu_s': infer_cpu,
                     'accuracy': round(acc, 4)})
-    print(f"  Conv1D:      wall={wall:>8.4f}s  cpu={cpu:>8.4f}s  "
-          f"acc={acc:.4f}")
+    print(f"  1D-CNN:      train_wall={train_wall:>8.4f}s  train_cpu={train_cpu:>8.4f}s  "
+          f"infer_wall={infer_wall:>8.4f}s  infer_cpu={infer_cpu:>8.4f}s  acc={acc:.4f}")
 
     # --- DL: MLP ---
     from dl import make_mlp_model
 
-    def run_mlp():
-        model = make_mlp_model(
-            n_features=X_tr.shape[1], n_classes=n_classes,
-            config='small', use_batch_norm=False, use_whitening=False)
-        trained_model, info = train_model(
-            model, X_tr, y_tr, X_te, X_te, y_te,
+    model_mlp = make_mlp_model(
+        n_features=X_tr.shape[1], n_classes=n_classes,
+        config='small', use_batch_norm=False, use_whitening=False)
+
+    def _train_mlp():
+        return train_model(
+            model_mlp, X_tr, y_tr, X_te, X_te, y_te,
             epochs=50, lr=1e-3, batch_size=64,
             use_coral=False, verbose=False)
-        device = next(trained_model.parameters()).device
-        with torch.no_grad():
-            logits = trained_model.predict(torch.FloatTensor(X_te).to(device))
-        preds = logits.argmax(dim=1).cpu().numpy()
-        from sklearn.metrics import accuracy_score
-        return accuracy_score(y_te, preds)
 
-    acc, wall, cpu = measure_resource(run_mlp)
-    results.append({'category': 'DL_MLP', 'dataset': ds_name,
-                    'wall_time_s': wall, 'cpu_time_s': cpu,
+    (trained_mlp, _info), train_wall, train_cpu = measure_resource(_train_mlp)
+
+    def _infer_mlp():
+        device = next(trained_mlp.parameters()).device
+        with torch.no_grad():
+            logits = trained_mlp.predict(torch.FloatTensor(X_te).to(device))
+        return logits.argmax(dim=1).cpu().numpy()
+
+    preds, infer_wall, infer_cpu = measure_resource(_infer_mlp)
+    acc = accuracy_score(y_te, preds)
+    results.append({'category': 'MLP', 'dataset': ds_name,
+                    'train_wall_s': train_wall, 'train_cpu_s': train_cpu,
+                    'infer_wall_s': infer_wall, 'infer_cpu_s': infer_cpu,
                     'accuracy': round(acc, 4)})
-    print(f"  MLP:         wall={wall:>8.4f}s  cpu={cpu:>8.4f}s  "
-          f"acc={acc:.4f}")
+    print(f"  MLP:         train_wall={train_wall:>8.4f}s  train_cpu={train_cpu:>8.4f}s  "
+          f"infer_wall={infer_wall:>8.4f}s  infer_cpu={infer_cpu:>8.4f}s  acc={acc:.4f}")
 
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
@@ -367,7 +344,7 @@ if __name__ == '__main__':
                         default=os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                              '..', '..', 'data'),
                         help='Root folder containing dataset subfolders')
-    parser.add_argument('--n-samples', type=int, default=50000,
+    parser.add_argument('--n-samples', type=int, default=10000,
                         help='Number of CSI packets for preprocessing benchmark')
     parser.add_argument('--window', type=int, default=300, help='Window length')
     parser.add_argument('--sr', type=int, default=150, help='Guaranteed sample rate')

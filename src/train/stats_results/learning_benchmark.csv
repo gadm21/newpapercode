@@ -1,6 +1,5 @@
-category,dataset,wall_time_s,cpu_time_s,accuracy
-PCA+KNN,office_har_data,1.1992,6.3906,0.8564
-ML_RandomForest,office_har_data,2.2208,15.0469,0.9043
-ML_XGBoost,office_har_data,133.1882,520.7344,0.9144
-DL_Conv1D,office_har_data,86.5143,282.75,0.8917
-DL_MLP,office_har_data,71.1021,278.9375,0.8338
+category,dataset,train_wall_s,train_cpu_s,infer_wall_s,infer_cpu_s,accuracy
+RandomForest,home_har_data,20.3826,182.5625,0.3565,1.0156,0.4488
+XGBoost,home_har_data,1795.7976,15954.25,0.3417,3.4688,0.4758
+1D-CNN,home_har_data,185.1225,1721.375,0.8896,8.4844,0.4542
+MLP,home_har_data,245.8996,2302.5,0.3857,3.5469,0.3823
