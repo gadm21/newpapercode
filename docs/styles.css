@@ -408,6 +408,18 @@ body {
   opacity: 1;
 }
 
+/* ── Hero CSI ambient waveform canvas ─────────────────────── */
+.paper-header { position: relative; }
+.hero-csi-canvas {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 120px;
+  pointer-events: none;
+  opacity: 0.18;
+  z-index: 0;
+}
+.paper-header > *:not(.hero-csi-canvas) { position: relative; z-index: 1; }
+
 /* ── Scroll progress bar ───────────────────────────────────── */
 .scroll-progress {
   position: fixed;
@@ -1770,10 +1782,11 @@ h4 { font-size: 12px; font-weight: 600; color: var(--text-mid); }
 .process-viz-panel canvas {
   width: 100%;
   height: 150px;
-  opacity: 0;
-  transition: opacity 0.4s;
+  display: none;
 }
-.process-viz-panel.active canvas {
+.process-viz-panel.active canvas,
+.process-viz-panel canvas[style*="display: block"],
+.process-viz-panel canvas[style*="display:block"] {
   opacity: 1;
 }
 

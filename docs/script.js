@@ -516,7 +516,120 @@ function initSectionNumbers() {
   document.querySelectorAll('.section-num').forEach(n => io.observe(n));
 }
 
-/* ── 16. Interactive Pipeline Visualization ─────────────────────── */
+/* ══════════════════════════════════════════════════════════════════
+   REALISTIC CSI DATA GENERATOR
+   Models actual ESP32-C6 WiFi channel behaviour:
+   - 52 LLTF subcarriers across 20 MHz band (802.11n)
+   - Multipath fading: 3-tap Rician channel (K=6 dB)
+   - Activity-induced Doppler: walking ~2 Hz, sitting ~0.3 Hz
+   - Thermal noise floor at -90 dBm
+   ══════════════════════════════════════════════════════════════════ */
+const CSI = (() => {
+  // Seeded PRNG for reproducible "real" data across page loads
+  let _seed = 42;
+  function rand() { _seed = (_seed * 16807 + 0) % 2147483647; return (_seed - 1) / 2147483646; }
+  function randn() { const u = rand(), v = rand(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+  // Generate a realistic multipath channel frequency response (52 subcarriers)
+  // Uses 3-tap model: LoS + wall reflection + NLoS scatter
+  function channelResponse(t, activityHz) {
+    const N = 52;
+    const amp = new Float64Array(N);
+    // Rician K-factor
+    const K = 4.0;
+    const losAmp = Math.sqrt(K / (K + 1));
+    const scatterAmp = Math.sqrt(1 / (2 * (K + 1)));
+
+    for (let m = 0; m < N; m++) {
+      const f = (m - 26) / 52; // normalised frequency
+      // LoS component with slow phase drift
+      const losPhase = 2 * Math.PI * (f * 3.2 + t * 0.05);
+      let re = losAmp * Math.cos(losPhase);
+      let im = losAmp * Math.sin(losPhase);
+
+      // Wall reflection (delayed, attenuated)
+      const wallDelay = 0.15 + 0.02 * Math.sin(t * 0.3);
+      const wallAtt = 0.45;
+      const wallPhase = 2 * Math.PI * (f * 52 * wallDelay + t * 0.1);
+      re += wallAtt * Math.cos(wallPhase);
+      im += wallAtt * Math.sin(wallPhase);
+
+      // Human body scatter — Doppler shift from activity
+      const dopplerPhase = 2 * Math.PI * (activityHz * t + f * 1.8);
+      const bodyAtt = 0.25 + 0.15 * Math.sin(t * activityHz * 0.7);
+      re += bodyAtt * scatterAmp * Math.cos(dopplerPhase);
+      im += bodyAtt * scatterAmp * Math.sin(dopplerPhase);
+
+      // AWGN
+      re += 0.04 * randn();
+      im += 0.04 * randn();
+
+      amp[m] = Math.sqrt(re * re + im * im);
+    }
+    return amp;
+  }
+
+  // Generate a time series of CSI amplitude for one subcarrier
+  // with activity-specific patterns (walking, sitting, standing, etc.)
+  function activityTimeSeries(numSamples, activity) {
+    const profiles = {
+      walking:  { freq: 1.8, amp: 0.35, breath: 0.08, noise: 0.04 },
+      sitting:  { freq: 0.3, amp: 0.08, breath: 0.05, noise: 0.03 },
+      standing: { freq: 0.15, amp: 0.04, breath: 0.06, noise: 0.03 },
+      lying:    { freq: 0.1,  amp: 0.03, breath: 0.10, noise: 0.02 },
+      jumping:  { freq: 3.2,  amp: 0.50, breath: 0.06, noise: 0.05 },
+      empty:    { freq: 0.0,  amp: 0.0,  breath: 0.0,  noise: 0.02 },
+    };
+    const p = profiles[activity] || profiles.walking;
+    const series = new Float64Array(numSamples);
+    const baseline = 0.65 + 0.1 * rand();
+
+    for (let n = 0; n < numSamples; n++) {
+      const t = n / 150; // 150 Hz sample rate
+      let val = baseline;
+      // Activity motion
+      val += p.amp * Math.sin(2 * Math.PI * p.freq * t + rand() * 0.3);
+      // Harmonics (natural gait has harmonics)
+      if (p.freq > 0.5) val += p.amp * 0.3 * Math.sin(2 * Math.PI * p.freq * 2 * t + 0.5);
+      // Breathing
+      val += p.breath * Math.sin(2 * Math.PI * 0.25 * t);
+      // Thermal noise
+      val += p.noise * randn();
+      series[n] = Math.max(0.05, val);
+    }
+    return series;
+  }
+
+  // Multi-subcarrier time series (52 subcarriers × numSamples)
+  function multiSubcarrierSeries(numSamples, activity) {
+    const data = [];
+    for (let sc = 0; sc < 52; sc++) {
+      _seed = 42 + sc * 137; // deterministic per-subcarrier seed
+      data.push(activityTimeSeries(numSamples, activity));
+    }
+    return data;
+  }
+
+  // Rolling variance computation
+  function rollingVariance(signal, W) {
+    const N = signal.length;
+    const rv = new Float64Array(N);
+    for (let i = W; i < N; i++) {
+      let sum = 0, sumSq = 0;
+      for (let j = i - W; j < i; j++) {
+        sum += signal[j];
+        sumSq += signal[j] * signal[j];
+      }
+      const mean = sum / W;
+      rv[i] = sumSq / W - mean * mean;
+    }
+    return rv;
+  }
+
+  return { channelResponse, activityTimeSeries, multiSubcarrierSeries, rollingVariance, rand, randn };
+})();
+
+/* ── 16. Interactive Pipeline Visualization (realistic CSI) ────── */
 function initInteractivePipeline() {
   const pipelinePanel = document.getElementById('pipelineViz');
   const pipelineCanvas = document.getElementById('pipelineCanvas');
@@ -524,143 +637,377 @@ function initInteractivePipeline() {
 
   const ctx = pipelineCanvas.getContext('2d');
   const steps = document.querySelectorAll('.pipeline-steps .pipeline-step');
+  let animFrame = null;
 
-  // Pipeline step visualizations - actual data representations
-  const vizData = {
-    csi: { title: 'Raw CSI (64 subcarriers)', type: 'spectrum' },
-    uart: { title: 'UART Serial Transfer', type: 'packets' },
-    csv: { title: 'CSV Data Storage', type: 'table' },
-    lltf: { title: 'LLTF Selection (52 subcarriers)', type: 'filtered' },
-    resample: { title: 'Resampled @ 150 Hz', type: 'waveform' }
-  };
+  // Pre-generate realistic data once
+  const walkSeries = CSI.multiSubcarrierSeries(450, 'walking'); // 3 seconds @ 150 Hz
+  const rawCSISnapshot = CSI.channelResponse(0.5, 1.8);         // one freq-domain snapshot
 
-  function drawVisualization(stepKey) {
-    const viz = vizData[stepKey];
-    if (!viz) return;
-
-    pipelinePanel.classList.add('active');
-    const w = pipelineCanvas.width = pipelineCanvas.offsetWidth * 2;
-    const h = pipelineCanvas.height = 300;
-    ctx.clearRect(0, 0, w, h);
-
-    // Title
-    ctx.fillStyle = '#E8E5DC';
-    ctx.font = '24px Inter, sans-serif';
+  function label(text, x, y, color, font) {
+    ctx.fillStyle = color || '#5A5B66';
+    ctx.font = font || '20px Inter, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(viz.title, w / 2, 30);
-
-    // Draw based on type
-    if (viz.type === 'spectrum') {
-      // Draw 64 subcarrier bars
-      const barW = (w - 80) / 64;
-      for (let i = 0; i < 64; i++) {
-        const amp = 30 + Math.sin(i * 0.3) * 20 + Math.random() * 40;
-        const hue = 22 + (i / 64) * 30;
-        ctx.fillStyle = `hsl(${hue}, 80%, 55%)`;
-        ctx.fillRect(40 + i * barW, h - 40 - amp, barW - 2, amp);
-      }
-      ctx.fillStyle = '#5A5B66';
-      ctx.font = '18px Inter';
-      ctx.fillText('Subcarrier Index (0-63)', w / 2, h - 10);
-    } else if (viz.type === 'packets') {
-      // Draw packet flow animation
-      for (let i = 0; i < 8; i++) {
-        const x = 60 + i * (w - 120) / 7;
-        ctx.fillStyle = i % 2 === 0 ? '#E8703A' : '#9B8AFB';
-        ctx.fillRect(x, 60, 40, 80);
-        ctx.fillStyle = '#E8E5DC';
-        ctx.font = '14px JetBrains Mono';
-        ctx.textAlign = 'center';
-        ctx.fillText(`PKT${i}`, x + 20, 105);
-      }
-      ctx.strokeStyle = '#3FD68F';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
-      ctx.moveTo(40, 100);
-      ctx.lineTo(w - 40, 100);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    } else if (viz.type === 'table') {
-      // Draw CSV table representation
-      const cols = ['Time', 'SC1', 'SC2', '...', 'SC52'];
-      const colW = (w - 80) / cols.length;
-      ctx.fillStyle = '#22243A';
-      ctx.fillRect(40, 50, w - 80, 30);
-      ctx.fillStyle = '#E8E5DC';
-      ctx.font = '16px JetBrains Mono';
-      cols.forEach((c, i) => {
-        ctx.textAlign = 'center';
-        ctx.fillText(c, 40 + colW * i + colW / 2, 70);
-      });
-      for (let r = 0; r < 4; r++) {
-        ctx.fillStyle = r % 2 === 0 ? '#1A1B25' : '#12131A';
-        ctx.fillRect(40, 80 + r * 25, w - 80, 25);
-        ctx.fillStyle = '#A0A1AB';
-        ctx.font = '14px JetBrains Mono';
-        const vals = [r * 0.007 + '.000', '0.82', '0.91', '...', '0.76'];
-        vals.forEach((v, i) => {
-          ctx.fillText(v, 40 + colW * i + colW / 2, 97 + r * 25);
-        });
-      }
-    } else if (viz.type === 'filtered') {
-      // Draw filtered spectrum (52 LLTF)
-      const barW = (w - 80) / 52;
-      for (let i = 0; i < 52; i++) {
-        const amp = 40 + Math.sin(i * 0.25) * 25 + Math.random() * 30;
-        ctx.fillStyle = '#3FD68F';
-        ctx.fillRect(40 + i * barW, h - 40 - amp, barW - 2, amp);
-      }
-      ctx.fillStyle = '#5A5B66';
-      ctx.font = '18px Inter';
-      ctx.fillText('LLTF Subcarriers (52 selected)', w / 2, h - 10);
-    } else if (viz.type === 'waveform') {
-      // Draw resampled waveform
-      ctx.strokeStyle = '#E8703A';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      for (let x = 40; x < w - 40; x++) {
-        const t = (x - 40) / (w - 80);
-        const y = h / 2 + Math.sin(t * 20) * 40 + Math.sin(t * 7) * 20;
-        if (x === 40) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-      // Sample points
-      for (let i = 0; i < 30; i++) {
-        const x = 40 + i * (w - 80) / 29;
-        const t = i / 29;
-        const y = h / 2 + Math.sin(t * 20) * 40 + Math.sin(t * 7) * 20;
-        ctx.fillStyle = '#4B9EFF';
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.fillStyle = '#5A5B66';
-      ctx.font = '18px Inter';
-      ctx.fillText('150 Hz uniform sampling', w / 2, h - 10);
-    }
+    ctx.fillText(text, x, y);
   }
 
-  function clearVisualization() {
-    pipelinePanel.classList.remove('active');
+  function drawCSI(w, h) {
+    // Animated 64-subcarrier frequency response with multipath notches
+    let t0 = performance.now() / 1000;
+    function frame() {
+      const t = performance.now() / 1000 - t0 + 0.5;
+      const resp = CSI.channelResponse(t, 1.8);
+      ctx.clearRect(0, 0, w, h);
+      label('Raw CSI — 64 Subcarriers (live multipath channel)', w / 2, 28, '#E8E5DC');
+
+      const padL = 60, padR = 40, padB = 50, plotH = h - 80;
+      const barW = (w - padL - padR) / 64;
+
+      // Frequency axis background
+      ctx.fillStyle = 'rgba(18,19,26,0.6)';
+      ctx.fillRect(padL, 35, w - padL - padR, plotH);
+
+      for (let i = 0; i < 64; i++) {
+        // 6 guard + 6 guard subcarriers are nulled in 802.11
+        const isNull = i < 6 || i >= 58;
+        const amp = isNull ? 0.03 : (i < 64 ? resp[Math.min(i - 6, 51)] || 0.1 : 0.1);
+        const barH = amp * plotH * 0.7;
+        const alpha = isNull ? 0.15 : 0.85;
+
+        // Gradient per bar
+        const grad = ctx.createLinearGradient(0, 35 + plotH - barH, 0, 35 + plotH);
+        grad.addColorStop(0, isNull ? `rgba(90,91,102,${alpha})` : `rgba(232,112,58,${alpha})`);
+        grad.addColorStop(1, isNull ? 'rgba(90,91,102,0.1)' : 'rgba(232,112,58,0.15)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(padL + i * barW + 1, 35 + plotH - barH, barW - 2, barH);
+      }
+
+      // Axis labels
+      label('Subcarrier Index', w / 2, h - 8, '#5A5B66', '14px Inter');
+      ctx.save();
+      ctx.translate(16, 35 + plotH / 2);
+      ctx.rotate(-Math.PI / 2);
+      label('|H(f)|', 0, 0, '#5A5B66', '14px Inter');
+      ctx.restore();
+
+      // LLTF range indicator
+      const lltfL = padL + 6 * barW, lltfR = padL + 58 * barW;
+      ctx.strokeStyle = 'rgba(63,214,143,0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 3]);
+      ctx.strokeRect(lltfL, 36, lltfR - lltfL, plotH - 2);
+      ctx.setLineDash([]);
+      label('← 52 LLTF subcarriers →', (lltfL + lltfR) / 2, h - 26, '#3FD68F', '11px Inter');
+
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function drawUART(w, h) {
+    let t0 = performance.now();
+    function frame() {
+      const elapsed = (performance.now() - t0) / 1000;
+      ctx.clearRect(0, 0, w, h);
+      label('UART Serial Transfer — ESP32-C6 → Host PC', w / 2, 28, '#E8E5DC');
+
+      const padL = 50, padR = 40, midY = h / 2 - 10;
+      const lineW = w - padL - padR;
+
+      // Serial line
+      ctx.strokeStyle = 'rgba(75,158,255,0.2)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(padL, midY); ctx.lineTo(padL + lineW, midY);
+      ctx.stroke();
+
+      // TX/RX labels
+      label('ESP32 TX', padL + 20, midY - 40, '#E8703A', 'bold 13px Inter');
+      label('Host RX', padL + lineW - 20, midY - 40, '#4B9EFF', 'bold 13px Inter');
+
+      // Animated data packets flowing left→right
+      const pktW = 70, pktH = 32, gap = 30;
+      const totalW = pktW + gap;
+      const numPkts = Math.ceil(lineW / totalW) + 2;
+
+      for (let i = 0; i < numPkts; i++) {
+        const baseX = padL + i * totalW;
+        const xOff = (elapsed * 120) % totalW; // 120 px/s flow speed
+        const px = baseX - xOff;
+        if (px < padL - pktW || px > padL + lineW) continue;
+
+        // Packet with CSI data preview
+        const alpha = Math.min(1, Math.min(px - padL, padL + lineW - px) / 40);
+        if (alpha <= 0) continue;
+
+        ctx.fillStyle = `rgba(26,27,37,${0.9 * alpha})`;
+        ctx.strokeStyle = `rgba(232,112,58,${0.5 * alpha})`;
+        ctx.lineWidth = 1.5;
+        const rr = 6;
+        const ry = midY - pktH / 2;
+        ctx.beginPath();
+        ctx.moveTo(px + rr, ry);
+        ctx.lineTo(px + pktW - rr, ry);
+        ctx.arcTo(px + pktW, ry, px + pktW, ry + rr, rr);
+        ctx.lineTo(px + pktW, ry + pktH - rr);
+        ctx.arcTo(px + pktW, ry + pktH, px + pktW - rr, ry + pktH, rr);
+        ctx.lineTo(px + rr, ry + pktH);
+        ctx.arcTo(px, ry + pktH, px, ry + pktH - rr, rr);
+        ctx.lineTo(px, ry + rr);
+        ctx.arcTo(px, ry, px + rr, ry, rr);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+
+        // Mini CSI bars inside packet
+        const miniN = 12;
+        const miniW = (pktW - 10) / miniN;
+        for (let j = 0; j < miniN; j++) {
+          const amp = walkSeries[j * 4][((i * 7 + j * 3) % 300)];
+          const bH = amp * 14;
+          ctx.fillStyle = `rgba(232,112,58,${0.6 * alpha})`;
+          ctx.fillRect(px + 5 + j * miniW, midY + pktH / 2 - 4 - bH, miniW - 1.5, bH);
+        }
+
+        ctx.fillStyle = `rgba(160,161,171,${0.7 * alpha})`;
+        ctx.font = '9px JetBrains Mono';
+        ctx.textAlign = 'center';
+        ctx.fillText(`CSI[${(i * 7) % 450}]`, px + pktW / 2, midY - pktH / 2 - 4);
+      }
+
+      // Bandwidth label
+      label('115200 baud · ~100 pkts/s', w / 2, h - 16, '#5A5B66', '12px Inter');
+
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function drawCSV(w, h) {
+    ctx.clearRect(0, 0, w, h);
+    label('CSV Storage — Time-stamped CSI Records', w / 2, 28, '#E8E5DC');
+
+    const padL = 30, padR = 30, topY = 44;
+    const cols = ['timestamp', 'sc_0', 'sc_1', 'sc_2', '···', 'sc_49', 'sc_50', 'sc_51'];
+    const colW = (w - padL - padR) / cols.length;
+    const rowH = 24;
+
+    // Header
+    ctx.fillStyle = '#22243A';
+    ctx.fillRect(padL, topY, w - padL - padR, rowH + 2);
+    ctx.fillStyle = '#E8703A';
+    ctx.font = 'bold 12px JetBrains Mono';
+    cols.forEach((c, i) => {
+      ctx.textAlign = 'center';
+      ctx.fillText(c, padL + colW * i + colW / 2, topY + 16);
+    });
+
+    // Data rows — use actual generated CSI values
+    const activities = ['walking', 'walking', 'walking', 'sitting', 'sitting', 'standing'];
+    const actColors = { walking: '#E8703A', sitting: '#4B9EFF', standing: '#3FD68F' };
+    const numRows = Math.min(6, Math.floor((h - topY - rowH - 30) / rowH));
+
+    for (let r = 0; r < numRows; r++) {
+      const act = activities[r];
+      const bgAlpha = r % 2 === 0 ? 0.4 : 0.2;
+      ctx.fillStyle = `rgba(18,19,26,${bgAlpha})`;
+      ctx.fillRect(padL, topY + rowH + 2 + r * rowH, w - padL - padR, rowH);
+
+      // Activity color indicator on left edge
+      ctx.fillStyle = actColors[act];
+      ctx.fillRect(padL, topY + rowH + 2 + r * rowH, 3, rowH);
+
+      ctx.fillStyle = '#A0A1AB';
+      ctx.font = '11px JetBrains Mono';
+      const ts = `0.${String(r * 7).padStart(3, '0')}`;
+      ctx.textAlign = 'center';
+      ctx.fillText(ts, padL + colW * 0 + colW / 2, topY + rowH + 18 + r * rowH);
+
+      // Real CSI values from generated data
+      for (let c = 1; c < cols.length; c++) {
+        if (cols[c] === '···') {
+          ctx.fillText('···', padL + colW * c + colW / 2, topY + rowH + 18 + r * rowH);
+        } else {
+          const scIdx = c === 1 ? 0 : c === 2 ? 1 : c === 3 ? 2 : c === 6 ? 50 : c === 7 ? 51 : 49;
+          const val = walkSeries[Math.min(scIdx, 51)][r * 20 + 10];
+          ctx.fillText(val.toFixed(3), padL + colW * c + colW / 2, topY + rowH + 18 + r * rowH);
+        }
+      }
+    }
+
+    // Legend
+    label(`${numRows} of 67,500 rows shown (450s × 150 Hz)`, w / 2, h - 10, '#5A5B66', '11px Inter');
+  }
+
+  function drawLLTF(w, h) {
+    let t0 = performance.now() / 1000;
+    function frame() {
+      const t = performance.now() / 1000 - t0 + 0.5;
+      ctx.clearRect(0, 0, w, h);
+      label('LLTF Selection — 52 Data Subcarriers Extracted', w / 2, 28, '#E8E5DC');
+
+      const padL = 60, padR = 40, padB = 50, plotH = h - 85;
+      const barW = (w - padL - padR) / 52;
+      const resp = CSI.channelResponse(t, 1.8);
+
+      // Plot area bg
+      ctx.fillStyle = 'rgba(18,19,26,0.5)';
+      ctx.fillRect(padL, 40, w - padL - padR, plotH);
+
+      for (let i = 0; i < 52; i++) {
+        const amp = resp[i];
+        const barH = amp * plotH * 0.72;
+
+        const grad = ctx.createLinearGradient(0, 40 + plotH - barH, 0, 40 + plotH);
+        grad.addColorStop(0, `rgba(63,214,143,0.85)`);
+        grad.addColorStop(1, 'rgba(63,214,143,0.1)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(padL + i * barW + 1, 40 + plotH - barH, barW - 2, barH);
+
+        // Multipath notch markers
+        if (amp < 0.35) {
+          ctx.fillStyle = 'rgba(224,82,82,0.6)';
+          ctx.font = '10px Inter';
+          ctx.textAlign = 'center';
+          ctx.fillText('▼', padL + i * barW + barW / 2, 40 + plotH - barH - 6);
+        }
+      }
+
+      // Frequency-selective fading envelope line
+      ctx.strokeStyle = 'rgba(63,214,143,0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let i = 0; i < 52; i++) {
+        const x = padL + i * barW + barW / 2;
+        const y = 40 + plotH - resp[i] * plotH * 0.72;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      label('Subcarrier Index (LLTF 0-51)', w / 2, h - 8, '#5A5B66', '13px Inter');
+      label('▼ = multipath notch (deep fade)', w / 2, h - 24, 'rgba(224,82,82,0.6)', '10px Inter');
+
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function drawResample(w, h) {
+    let t0 = performance.now() / 1000;
+    const rawSeries = CSI.activityTimeSeries(450, 'walking');
+    // Simulate irregular sampling → uniform 150 Hz
+    const irregTimes = [];
+    let tAccum = 0;
+    for (let i = 0; i < 100; i++) {
+      tAccum += 0.004 + CSI.rand() * 0.009; // 80-130 Hz irregular
+      irregTimes.push(tAccum);
+    }
+
+    function frame() {
+      const phase = ((performance.now() / 1000 - t0) * 30) % 300; // scroll
+      ctx.clearRect(0, 0, w, h);
+      label('Resampling → Uniform 150 Hz', w / 2, 28, '#E8E5DC');
+
+      const padL = 50, padR = 40, plotH = h - 90, topY = 50;
+      const plotW = w - padL - padR;
+      const windowN = 200;
+      const startIdx = Math.floor(phase);
+
+      // Background
+      ctx.fillStyle = 'rgba(18,19,26,0.4)';
+      ctx.fillRect(padL, topY, plotW, plotH);
+
+      // Raw irregular samples (dots connected by dim line)
+      ctx.strokeStyle = 'rgba(160,161,171,0.25)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      let prevX, prevY;
+      for (let i = 0; i < 60; i++) {
+        const si = (startIdx + i * 3) % 450;
+        const x = padL + (i / 60) * plotW;
+        const y = topY + plotH - rawSeries[si] * plotH * 0.8;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Irregular sample dots
+      for (let i = 0; i < 60; i++) {
+        const si = (startIdx + i * 3) % 450;
+        const x = padL + (i / 60) * plotW;
+        const y = topY + plotH - rawSeries[si] * plotH * 0.8;
+        ctx.fillStyle = 'rgba(160,161,171,0.5)';
+        ctx.beginPath();
+        ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Resampled uniform signal (smooth, bold)
+      ctx.strokeStyle = '#E8703A';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i < windowN; i++) {
+        const si = (startIdx + i) % 450;
+        const x = padL + (i / windowN) * plotW;
+        const y = topY + plotH - rawSeries[si] * plotH * 0.8;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Uniform sample markers
+      for (let i = 0; i < windowN; i += 8) {
+        const si = (startIdx + i) % 450;
+        const x = padL + (i / windowN) * plotW;
+        const y = topY + plotH - rawSeries[si] * plotH * 0.8;
+        ctx.fillStyle = '#E8703A';
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Legend
+      ctx.fillStyle = 'rgba(160,161,171,0.5)';
+      ctx.beginPath(); ctx.arc(padL + 20, h - 28, 3, 0, Math.PI * 2); ctx.fill();
+      label('Irregular (~100 Hz)', padL + 80, h - 24, '#A0A1AB', '11px Inter');
+      ctx.fillStyle = '#E8703A';
+      ctx.beginPath(); ctx.arc(padL + 180, h - 28, 3, 0, Math.PI * 2); ctx.fill();
+      label('Resampled (150 Hz)', padL + 240, h - 24, '#E8703A', '11px Inter');
+
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  const drawFns = { csi: drawCSI, uart: drawUART, csv: drawCSV, lltf: drawLLTF, resample: drawResample };
+
+  function activate(stepKey) {
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    pipelinePanel.querySelector('.process-viz-placeholder').style.display = 'none';
+    pipelineCanvas.style.display = 'block';
+    const pw = pipelinePanel.offsetWidth || 600;
+    const w = pipelineCanvas.width  = pw * 2;
+    const h = pipelineCanvas.height = 300;
+    ctx.clearRect(0, 0, w, h);
+    if (drawFns[stepKey]) drawFns[stepKey](w, h);
+  }
+
+  function deactivate() {
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    pipelineCanvas.style.display = 'none';
+    pipelinePanel.querySelector('.process-viz-placeholder').style.display = '';
   }
 
   steps.forEach(step => {
     step.addEventListener('mouseenter', () => {
-      const stepKey = step.dataset.step;
       steps.forEach(s => s.classList.remove('active'));
       step.classList.add('active');
-      drawVisualization(stepKey);
+      activate(step.dataset.step);
     });
     step.addEventListener('mouseleave', () => {
       step.classList.remove('active');
-      clearVisualization();
+      deactivate();
     });
   });
 }
 
-/* ── 17. Interactive Feature Visualization ─────────────────────── */
+/* ── 17. Interactive Feature Visualization (realistic CSI) ────── */
 function initInteractiveFeatures() {
   const featurePanel = document.getElementById('featureViz');
   const featureCanvas = document.getElementById('featureCanvas');
@@ -668,147 +1015,261 @@ function initInteractiveFeatures() {
 
   const ctx = featureCanvas.getContext('2d');
   const branches = document.querySelectorAll('.branches-row .branch');
+  let animFrame = null;
 
-  function drawFeatureViz(featureKey) {
-    featurePanel.classList.add('active');
-    const w = featureCanvas.width = featureCanvas.offsetWidth * 2;
-    const h = featureCanvas.height = 300;
-    ctx.clearRect(0, 0, w, h);
+  // Pre-generate realistic walking CSI (1 subcarrier, 450 samples)
+  const walkSignal  = CSI.activityTimeSeries(600, 'walking');
+  const sitSignal   = CSI.activityTimeSeries(600, 'sitting');
+  const multiSC     = CSI.multiSubcarrierSeries(600, 'walking');
 
-    // Generate sample signal
-    const signal = [];
-    for (let i = 0; i < 200; i++) {
-      const t = i / 200;
-      signal.push(Math.sin(t * 15) * 0.3 + Math.sin(t * 3) * 0.5 + (Math.random() - 0.5) * 0.2 + 0.5);
-    }
-
-    if (featureKey === 'sharp') {
-      // SHARP: Phase sanitization visualization
-      ctx.fillStyle = '#E8E5DC';
-      ctx.font = '24px Inter';
-      ctx.textAlign = 'center';
-      ctx.fillText('SHARP Phase Sanitization', w / 2, 30);
-
-      // Raw phase (noisy)
-      ctx.strokeStyle = '#9B8AFB44';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      for (let i = 0; i < signal.length; i++) {
-        const x = 40 + i * (w - 80) / signal.length;
-        const y = 80 + signal[i] * 60 + (Math.random() - 0.5) * 40;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Sanitized output
-      ctx.strokeStyle = '#9B8AFB';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      for (let i = 0; i < signal.length; i++) {
-        const x = 40 + i * (w - 80) / signal.length;
-        const y = 80 + signal[i] * 60;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      ctx.fillStyle = '#5A5B66';
-      ctx.font = '16px Inter';
-      ctx.fillText('Phase → Sanitized Amplitude (computationally expensive)', w / 2, h - 15);
-    } else if (featureKey === 'rollvar') {
-      // Rolling variance visualization
-      ctx.fillStyle = '#E8E5DC';
-      ctx.font = '24px Inter';
-      ctx.textAlign = 'center';
-      ctx.fillText('Rolling Variance Transform', w / 2, 30);
-
-      // Original signal
-      ctx.strokeStyle = '#5A5B6688';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      for (let i = 0; i < signal.length; i++) {
-        const x = 40 + i * (w - 80) / signal.length;
-        const y = 70 + signal[i] * 50;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      // Rolling variance (W=20)
-      const rv = [];
-      const W = 20;
-      for (let i = 0; i < signal.length; i++) {
-        if (i < W) { rv.push(0); continue; }
-        let sum = 0, sumSq = 0;
-        for (let j = i - W; j < i; j++) {
-          sum += signal[j];
-          sumSq += signal[j] * signal[j];
-        }
-        const mean = sum / W;
-        const variance = sumSq / W - mean * mean;
-        rv.push(variance);
-      }
-
-      ctx.strokeStyle = '#E8703A';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      const maxRv = Math.max(...rv) || 1;
-      for (let i = 0; i < rv.length; i++) {
-        const x = 40 + i * (w - 80) / rv.length;
-        const y = h - 50 - (rv[i] / maxRv) * 80;
-        if (i === 0 || rv[i] === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-
-      ctx.fillStyle = '#5A5B66';
-      ctx.font = '16px Inter';
-      ctx.fillText('σ²[n] = Var(x[n-W:n]) — Activity-induced fluctuations amplified', w / 2, h - 15);
-    } else if (featureKey === 'rawamp') {
-      // Raw amplitude visualization
-      ctx.fillStyle = '#E8E5DC';
-      ctx.font = '24px Inter';
-      ctx.textAlign = 'center';
-      ctx.fillText('Raw Amplitude (52 subcarriers)', w / 2, 30);
-
-      // Draw multiple subcarrier traces
-      for (let sc = 0; sc < 5; sc++) {
-        const hue = 200 + sc * 15;
-        ctx.strokeStyle = `hsl(${hue}, 70%, 55%)`;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        for (let i = 0; i < signal.length; i++) {
-          const x = 40 + i * (w - 80) / signal.length;
-          const offset = sc * 25;
-          const y = 70 + offset + signal[i] * 30 + Math.sin(i * 0.1 + sc) * 10;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-
-      ctx.fillStyle = '#5A5B66';
-      ctx.font = '16px Inter';
-      ctx.fillText('|H_m(n)| — Direct amplitude, no preprocessing', w / 2, h - 15);
-    }
+  function label(text, x, y, color, font) {
+    ctx.fillStyle = color || '#5A5B66';
+    ctx.font = font || '20px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(text, x, y);
   }
 
-  function clearFeatureViz() {
-    featurePanel.classList.remove('active');
+  function drawLine(data, startIdx, count, padL, topY, plotW, plotH, color, lw) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lw || 2;
+    ctx.beginPath();
+    for (let i = 0; i < count; i++) {
+      const x = padL + (i / count) * plotW;
+      const y = topY + plotH - data[(startIdx + i) % data.length] * plotH;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  function drawSHARP(w, h) {
+    let t0 = performance.now() / 1000;
+    function frame() {
+      const phase = ((performance.now() / 1000 - t0) * 20) % 400;
+      ctx.clearRect(0, 0, w, h);
+      label('SHARP Phase Sanitization', w / 2, 28, '#E8E5DC');
+
+      const padL = 50, padR = 40, plotH = (h - 100) / 2, plotW = w - padL - padR;
+      const topY1 = 45, topY2 = topY1 + plotH + 20;
+      const startIdx = Math.floor(phase);
+      const N = 300;
+
+      // Top panel: Raw phase (wrapped, noisy)
+      ctx.fillStyle = 'rgba(18,19,26,0.4)';
+      ctx.fillRect(padL, topY1, plotW, plotH);
+      label('Raw Phase (wrapped)', padL + 65, topY1 + 14, '#5A5B66', '11px Inter');
+
+      ctx.strokeStyle = 'rgba(155,138,251,0.3)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const x = padL + (i / N) * plotW;
+        const t = (startIdx + i) / 150;
+        // Simulate wrapped phase with jumps
+        const rawPhase = ((t * 8.5 + Math.sin(t * 1.8) * 2 + CSI.rand() * 0.8) % 2 - 1);
+        const y = topY1 + plotH / 2 - rawPhase * plotH * 0.4;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Bottom panel: Sanitized amplitude (clean)
+      ctx.fillStyle = 'rgba(18,19,26,0.4)';
+      ctx.fillRect(padL, topY2, plotW, plotH);
+      label('Sanitized Amplitude', padL + 65, topY2 + 14, '#5A5B66', '11px Inter');
+
+      drawLine(walkSignal, startIdx, N, padL, topY2, plotW, plotH, '#9B8AFB', 2);
+
+      // Arrow between panels
+      ctx.strokeStyle = '#5A5B66';
+      ctx.lineWidth = 1;
+      const arrowX = padL + plotW / 2;
+      ctx.beginPath(); ctx.moveTo(arrowX, topY1 + plotH + 2); ctx.lineTo(arrowX, topY2 - 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(arrowX - 5, topY2 - 7); ctx.lineTo(arrowX, topY2 - 2); ctx.lineTo(arrowX + 5, topY2 - 7); ctx.stroke();
+
+      label('⏱ 3.5s per window (expensive linear algebra)', w / 2, h - 8, '#e05252', '12px Inter');
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function drawRollVar(w, h) {
+    let t0 = performance.now() / 1000;
+    const rvW20   = CSI.rollingVariance(walkSignal, 20);
+    const rvW200  = CSI.rollingVariance(walkSignal, 200);
+    const maxRV20  = Math.max(...rvW20)  || 1;
+    const maxRV200 = Math.max(...rvW200) || 1;
+
+    function frame() {
+      const phase = ((performance.now() / 1000 - t0) * 20) % 400;
+      ctx.clearRect(0, 0, w, h);
+      label('Rolling Variance Transform', w / 2, 28, '#E8E5DC');
+
+      const padL = 50, padR = 40, plotW = w - padL - padR;
+      const topH = (h - 100) * 0.35, botH = (h - 100) * 0.55;
+      const topY = 45, botY = topY + topH + 16;
+      const startIdx = Math.floor(phase);
+      const N = 300;
+
+      // Top: raw amplitude signal
+      ctx.fillStyle = 'rgba(18,19,26,0.4)';
+      ctx.fillRect(padL, topY, plotW, topH);
+      label('CSI Amplitude |H(n)|', padL + 68, topY + 14, '#5A5B66', '11px Inter');
+      drawLine(walkSignal, startIdx, N, padL, topY, plotW, topH, 'rgba(160,161,171,0.5)', 1.2);
+
+      // Bottom: rolling variance (two window sizes)
+      ctx.fillStyle = 'rgba(18,19,26,0.4)';
+      ctx.fillRect(padL, botY, plotW, botH);
+      label('σ²_W[n]', padL + 30, botY + 14, '#5A5B66', '11px Inter');
+
+      // W=20 (green, sharp)
+      ctx.strokeStyle = '#3FD68F';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const idx = (startIdx + i) % rvW20.length;
+        const x = padL + (i / N) * plotW;
+        const y = botY + botH - (rvW20[idx] / maxRV20) * botH * 0.85;
+        if (i === 0 || rvW20[idx] === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // W=200 (orange, smooth envelope)
+      ctx.strokeStyle = '#E8703A';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let i = 0; i < N; i++) {
+        const idx = (startIdx + i) % rvW200.length;
+        const x = padL + (i / N) * plotW;
+        const y = botY + botH - (rvW200[idx] / maxRV200) * botH * 0.85;
+        if (i === 0 || rvW200[idx] === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Legend
+      ctx.fillStyle = '#3FD68F'; ctx.fillRect(padL + 10, h - 20, 20, 3);
+      label('W=20', padL + 50, h - 14, '#3FD68F', '11px Inter');
+      ctx.fillStyle = '#E8703A'; ctx.fillRect(padL + 90, h - 20, 20, 3);
+      label('W=200', padL + 132, h - 14, '#E8703A', '11px Inter');
+      label('⏱ 0.03s (100× faster than SHARP)', w / 2 + 80, h - 14, '#3FD68F', '12px Inter');
+
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  function drawRawAmp(w, h) {
+    let t0 = performance.now() / 1000;
+    function frame() {
+      const phase = ((performance.now() / 1000 - t0) * 20) % 400;
+      ctx.clearRect(0, 0, w, h);
+      label('Raw Amplitude — 52 Subcarriers', w / 2, 28, '#E8E5DC');
+
+      const padL = 50, padR = 40, plotH = h - 80, plotW = w - padL - padR;
+      const topY = 42;
+      const startIdx = Math.floor(phase);
+      const N = 250;
+
+      ctx.fillStyle = 'rgba(18,19,26,0.4)';
+      ctx.fillRect(padL, topY, plotW, plotH);
+
+      // Draw 8 representative subcarriers with distinct colors
+      const scIndices = [0, 7, 14, 21, 28, 35, 42, 49];
+      const scColors = ['#E8703A', '#FF9F6C', '#4B9EFF', '#7BC4FF', '#9B8AFB', '#3FD68F', '#FFD060', '#e05252'];
+
+      scIndices.forEach((sc, ci) => {
+        const data = multiSC[sc];
+        ctx.strokeStyle = scColors[ci];
+        ctx.lineWidth = 1.4;
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        for (let i = 0; i < N; i++) {
+          const idx = (startIdx + i) % data.length;
+          const x = padL + (i / N) * plotW;
+          const y = topY + plotH - data[idx] * plotH * 0.85;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+
+      // Label
+      label('|H_m(n)| — 8 of 52 subcarriers shown · walking activity', w / 2, h - 10, '#5A5B66', '12px Inter');
+      animFrame = requestAnimationFrame(frame);
+    }
+    frame();
+  }
+
+  const drawFns = { sharp: drawSHARP, rollvar: drawRollVar, rawamp: drawRawAmp };
+
+  function activate(key) {
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    featurePanel.querySelector('.process-viz-placeholder').style.display = 'none';
+    featureCanvas.style.display = 'block';
+    const pw = featurePanel.offsetWidth || 600;
+    const w = featureCanvas.width  = pw * 2;
+    const h = featureCanvas.height = 300;
+    ctx.clearRect(0, 0, w, h);
+    if (drawFns[key]) drawFns[key](w, h);
+  }
+
+  function deactivate() {
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    featureCanvas.style.display = 'none';
+    featurePanel.querySelector('.process-viz-placeholder').style.display = '';
   }
 
   branches.forEach(branch => {
     branch.addEventListener('mouseenter', () => {
-      const featureKey = branch.dataset.feature;
       branches.forEach(b => b.classList.remove('active'));
       branch.classList.add('active');
-      drawFeatureViz(featureKey);
+      activate(branch.dataset.feature);
     });
     branch.addEventListener('mouseleave', () => {
       branch.classList.remove('active');
-      clearFeatureViz();
+      deactivate();
     });
+  });
+}
+
+/* ── 16b. Live CSI signal flow in system diagram ─────────────── */
+function initLiveSignalFlow() {
+  const arrows = document.querySelectorAll('.signal-arrow');
+  if (!arrows.length) return;
+
+  // Add small canvas overlays to each signal arrow for animated data particles
+  arrows.forEach(arrow => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 100; canvas.height = 30;
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;';
+    arrow.style.position = 'relative';
+    arrow.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let t = Math.random() * 100;
+
+    function drawParticles() {
+      t += 0.03;
+      const cw = canvas.width, ch = canvas.height;
+      ctx.clearRect(0, 0, cw, ch);
+
+      // 3-4 travelling dots
+      for (let i = 0; i < 4; i++) {
+        const phase = (t + i * 1.5) % 6;
+        const x = (phase / 6) * cw;
+        const alpha = Math.sin((phase / 6) * Math.PI); // fade in/out
+        if (alpha < 0.05) continue;
+        ctx.fillStyle = `rgba(232,112,58,${alpha * 0.6})`;
+        ctx.beginPath();
+        ctx.arc(x, ch / 2, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        // Glow
+        ctx.fillStyle = `rgba(232,112,58,${alpha * 0.15})`;
+        ctx.beginPath();
+        ctx.arc(x, ch / 2, 7, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
   });
 }
 
@@ -830,6 +1291,62 @@ function initBarCharts() {
   document.querySelectorAll('.chart-container').forEach(el => observer.observe(el));
 }
 
+/* ── 19. Hero ambient CSI waveform ────────────────────────────── */
+function initHeroCSI() {
+  const canvas = document.getElementById('heroCSI');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const header = canvas.parentElement;
+
+  function resize() {
+    canvas.width  = header.offsetWidth * 2;
+    canvas.height = 240;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Pre-generate 5 subcarrier traces with different activities
+  const traces = [
+    { data: CSI.activityTimeSeries(900, 'walking'),  color: 'rgba(232,112,58,', lw: 2.0 },
+    { data: CSI.activityTimeSeries(900, 'sitting'),   color: 'rgba(75,158,255,', lw: 1.5 },
+    { data: CSI.activityTimeSeries(900, 'standing'),  color: 'rgba(63,214,143,', lw: 1.2 },
+    { data: CSI.activityTimeSeries(900, 'jumping'),   color: 'rgba(155,138,251,', lw: 1.8 },
+    { data: CSI.activityTimeSeries(900, 'lying'),     color: 'rgba(232,112,58,', lw: 1.0 },
+  ];
+
+  let t0 = performance.now() / 1000;
+
+  function frame() {
+    const elapsed = performance.now() / 1000 - t0;
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const N = 400; // visible samples
+    const scrollSpeed = 15; // samples per second
+    const startIdx = Math.floor(elapsed * scrollSpeed) % 500;
+
+    traces.forEach((tr, ti) => {
+      const yOffset = (ti / traces.length) * h * 0.6 + h * 0.1;
+      const alpha = 0.4 + 0.2 * Math.sin(elapsed * 0.5 + ti);
+
+      ctx.strokeStyle = tr.color + alpha.toFixed(2) + ')';
+      ctx.lineWidth = tr.lw;
+      ctx.beginPath();
+
+      for (let i = 0; i < N; i++) {
+        const idx = (startIdx + i) % tr.data.length;
+        const x = (i / N) * w;
+        const y = yOffset + (tr.data[idx] - 0.6) * h * 0.5;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
+
 /* ── BOOT ─────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initScrollProgress();
@@ -845,6 +1362,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initBarCharts();
   initInteractivePipeline();
   initInteractiveFeatures();
+  initLiveSignalFlow();
+  initHeroCSI();
   renderMath();
   initSmoothLinks();
   initSectionNumbers();
