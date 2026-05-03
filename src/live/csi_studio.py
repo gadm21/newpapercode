@@ -82,13 +82,14 @@ FFT_SIZE = 64
 DEFAULT_SR = 150
 DEFAULT_SEGMENT_SEC = 10
 HEATMAP_COLS = 80
-TRACE_BINS = 200
+TRACE_BINS = 120
 STFT_NFFT = 64
 STFT_HOP = 16
 STFT_FREQ_BINS = STFT_NFFT // 2
 PCA_ROLLING_SEGMENTS = 10
 PCA_UPDATE_INTERVAL = 1.0
 SLIDING_WINDOW_SEC = 10.0
+BASELINE_WINDOW_SEC = 60.0
 SMOOTH_ALPHA = 0.35
 
 AMP_MIN, AMP_MAX = 0, 50
@@ -136,7 +137,7 @@ T = dict(THEMES['night'])
 class RawCSIBuffer:
     """Thread-safe ring buffer that accumulates parsed CSI packets."""
 
-    def __init__(self, maxlen=30000):
+    def __init__(self, maxlen=15000):
         self.lock = threading.Lock()
         self._timestamps = deque(maxlen=maxlen)
         self._rssi = deque(maxlen=maxlen)
@@ -340,7 +341,7 @@ class SegmentSaver:
         self.lock = threading.Lock()
         self._file_idx = 0
         self._running = False
-        self.enabled = True
+        self.enabled = False
         self._segment_wall_start = None
         self._session_id = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
         os.makedirs(out_dir, exist_ok=True)
@@ -696,23 +697,54 @@ stop_event = threading.Event()
 
 def serial_reader(rx_port, baud, buf, stop_evt):
     """Read CSI lines from serial into buffer until stopped."""
+    print(f"  [serial] Opening {rx_port} at {baud} baud...")
+    line_count = 0
+    csi_count = 0
+    non_csi_samples = []
     try:
         with serial.Serial(rx_port, baudrate=baud, timeout=0.05) as ser:
+            print(f"  [serial] Port opened successfully")
             _ = ser.read(ser.in_waiting or 1)
+            line_count = 0
+            csi_count = 0
+            last_print = time.time()
+            non_csi_samples = []
             while not stop_evt.is_set():
                 line = ser.readline()
                 if not line:
+                    # Periodic heartbeat to show reader is alive
+                    if time.time() - last_print > 5.0:
+                        print(f"  [serial] Waiting for data... lines={line_count}, CSI={csi_count}, buf.count={buf.count}")
+                        last_print = time.time()
                     continue
+                line_count += 1
                 try:
                     text = line.decode("utf-8", errors="ignore").strip()
                 except Exception:
                     continue
                 if text.startswith("CSI_DATA,"):
                     buf.add_line(text)
+                    csi_count += 1
+                    if csi_count % 100 == 0:
+                        print(f"  [serial] Received {csi_count} CSI packets")
+                        last_print = time.time()
+                else:
+                    # Collect first few non-CSI lines for debugging
+                    if len(non_csi_samples) < 5 and text:
+                        non_csi_samples.append(text[:80])  # Truncate long lines
     except serial.SerialException as e:
         print(f"[error] Serial: {e}", file=sys.stderr)
     except OSError as e:
         print(f"[error] OS: {e}", file=sys.stderr)
+
+    # Print sample of non-CSI lines if we received data but no CSI
+    if line_count > 0 and csi_count == 0 and non_csi_samples:
+        print(f"  [serial] WARNING: Received {line_count} lines but no CSI_DATA packets")
+        print(f"  [serial] Sample lines received:")
+        for i, sample in enumerate(non_csi_samples):
+            print(f"    [{i}] {sample}")
+
+    print(f"  [serial] Reader stopped. Total lines: {line_count}, CSI packets: {csi_count}")
 
 
 def reset_board(port, baud, label):
@@ -897,11 +929,13 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         'last_seq': 0,
         'fps_times': deque(maxlen=30),
         'theme': 'night',
-        'saving': True,
+        'saving': False,
         '_prev_stft': None,
         '_prev_mean': None,
         '_prev_std': None,
         '_prev_var': {},
+        '_baseline': None,
+        '_baseline_samples': 0,
     }
 
     sc_colors = plt.cm.turbo(np.linspace(0.05, 0.95, NUM_SUBCARRIERS))
@@ -945,7 +979,7 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
     im = ax_heat.imshow(blank_stft, aspect='auto', origin='lower',
                         cmap=T['CMAP_HEAT'],
                         extent=[0, state['win_sec'], 0, STFT_FREQ_BINS],
-                        interpolation='bilinear', vmin=0, vmax=25)
+                        interpolation='bilinear', vmin=0, vmax=AMP_MAX)
     ax_heat.set_ylabel('Frequency Bin', fontsize=FONT_LABEL,
                        color=T['TEXT_SECONDARY'])
     ax_heat.set_title('STFT Spectrogram (mean across subcarriers)',
@@ -1005,7 +1039,7 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
     vblank = np.zeros((NUM_SUBCARRIERS, HEATMAP_COLS))
     var_im = ax_var.imshow(vblank, aspect='auto', origin='lower',
                            cmap=T['CMAP_VAR'], interpolation='bilinear',
-                           vmin=0, vmax=30,
+                           vmin=0, vmax=AMP_MAX,
                            extent=[0, state['win_sec'], 0, NUM_SUBCARRIERS])
     ax_var.set_ylabel('Subcarrier', fontsize=FONT_LABEL,
                       color=T['TEXT_SECONDARY'])
@@ -1052,15 +1086,15 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
     # TAB 3: Model (dataset overview, train RF, deploy, live inference)
     # ================================================================
     _m_left = L
-    _m_mid = L + (R - L) * 0.42
+    _m_left_w = (R - L) * 0.38          # left column width
+    _m_mid = _m_left + _m_left_w + 0.03 # right column start
     _m_right = R
-    _m_gap = 0.025
-    _ctrl_h = 0.07
+    _ctrl_h = 0.12                       # control strip height
 
-    # -- Left: Dataset overview (upper) --
-    ax_dataset = fig.add_axes([_m_left, Bot + _ctrl_h + 0.04,
-                               _m_mid - _m_left - _m_gap,
-                               Top - Bot - _ctrl_h - 0.04])
+    # -- Left upper: Dataset overview --
+    _ds_bot = Bot + _ctrl_h + 0.015
+    ax_dataset = fig.add_axes([_m_left, _ds_bot,
+                               _m_left_w, Top - _ds_bot])
     ax_dataset.set_xlim(0, 1); ax_dataset.set_ylim(0, 1)
     ax_dataset.axis('off')
     ax_dataset.set_facecolor(T['SURFACE'])
@@ -1075,9 +1109,9 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         fontsize=FONT_STATS + 1, color=T['TEXT_SECONDARY'], va='top',
         family='monospace', linespacing=1.8)
 
-    # -- Left: Control strip (lower) --
+    # -- Left lower: Control strip --
     ax_params = fig.add_axes([_m_left, Bot,
-                              _m_mid - _m_left - _m_gap, _ctrl_h + 0.02])
+                              _m_left_w, _ctrl_h])
     ax_params.set_xlim(0, 1); ax_params.set_ylim(0, 1)
     ax_params.axis('off')
     ax_params.set_facecolor(T['SURFACE'])
@@ -1085,12 +1119,13 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         sp.set_color(T['BORDER']); sp.set_linewidth(0.8)
         sp.set_visible(True)
     model_status_text = ax_params.text(
-        0.04, 0.20, 'No model trained', transform=ax_params.transAxes,
+        0.04, 0.15, 'No model trained', transform=ax_params.transAxes,
         fontsize=FONT_STATS, color=T['TEXT_SECONDARY'], va='center',
         family='monospace')
 
-    # -- Right: Live prediction (full height) --
-    ax_probs = fig.add_axes([_m_mid, Bot, _m_right - _m_mid, Top - Bot])
+    # -- Right: Live prediction (full height, clear of left controls) --
+    ax_probs = fig.add_axes([_m_mid, Bot,
+                             _m_right - _m_mid, Top - Bot])
     ax_probs.set_facecolor(T['SURFACE'])
     ax_probs.set_title('Live Prediction', fontsize=FONT_TITLE,
                        color=T['TEXT_PRIMARY'], fontweight='bold',
@@ -1112,27 +1147,30 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         'test_split_val': 0.2,
     }
 
-    # Controls positioned inside the bottom strip using figure coords
-    _cp = ax_params.get_position()
-    _cx, _cy = _cp.x0, _cp.y0
-    _cw, _ch = _cp.width, _cp.height
+    # Controls positioned inside the control strip using figure coords
     _bh = 0.024
-    _by = _cy + _ch * 0.55
+    _box_w = 0.055
+    _btn_w_ctrl = 0.065
+    # Upper row (param boxes): placed at top of control strip
+    _by_upper = Bot + _ctrl_h - _bh - 0.012
+    # Lower row (action buttons): placed below param boxes
+    _by_lower = Bot + 0.030
 
-    # Parameter labels + text boxes
+    # Parameter labels + text boxes (upper row of control strip)
     _param_items = [
-        ('Trees', 0.00, '100', 'n_trees_val', lambda t: max(1, int(t))),
-        ('Depth', 0.10, '0',   'max_depth_val', lambda t: max(0, int(t))),
-        ('Test%', 0.20, '20',  'test_split_val',
+        ('Trees', 0, '100', 'n_trees_val', lambda t: max(1, int(t))),
+        ('Depth', 1, '0',   'max_depth_val', lambda t: max(0, int(t))),
+        ('Test%', 2, '20',  'test_split_val',
          lambda t: max(0, min(90, int(t))) / 100.0),
     ]
     _param_boxes = []
     _param_box_axes = []
-    for plabel, poff, pinit, pkey, pfn in _param_items:
-        px = _cx + 0.005 + poff
-        fig.text(px, _by + _bh + 0.006, plabel, fontsize=7,
+    _param_spacing = (_m_left_w - 0.01) / 3.0
+    for plabel, pidx, pinit, pkey, pfn in _param_items:
+        px = _m_left + 0.005 + pidx * _param_spacing
+        fig.text(px, _by_upper + _bh + 0.004, plabel, fontsize=7,
                  color=T['TEXT_SECONDARY'], va='bottom')
-        ax_p = fig.add_axes([px, _by, 0.055, _bh])
+        ax_p = fig.add_axes([px, _by_upper, _box_w, _bh])
         box = TextBox(ax_p, '', initial=pinit,
                       color=T['CTRL_BG'], hovercolor=T['CTRL_HOVER'])
         box.text_disp.set_color(T['ACCENT_WARM'])
@@ -1150,17 +1188,18 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         _param_boxes.append(box)
         _param_box_axes.append(ax_p)
 
-    # Action buttons: Train, Deploy, Rescan
+    # Action buttons: Train, Deploy, Rescan (lower row of control strip)
     _btn_specs = [
-        ('Train', 0.33, T['SUCCESS'], 'bold'),
-        ('Deploy', 0.42, T['ACCENT'], 'bold'),
-        ('Rescan', 0.51, T['TEXT_SECONDARY'], 'normal'),
+        ('Train', 0, T['SUCCESS'], 'bold'),
+        ('Deploy', 1, T['ACCENT'], 'bold'),
+        ('Rescan', 2, T['TEXT_SECONDARY'], 'normal'),
     ]
     _action_btns = []
     _action_btn_axes = []
-    for blabel, boff, bcolor, bweight in _btn_specs:
-        bx = _cx + 0.005 + boff
-        ax_b = fig.add_axes([bx, _by, 0.065, _bh])
+    _btn_spacing = (_m_left_w - 0.01) / 3.0
+    for blabel, bidx, bcolor, bweight in _btn_specs:
+        bx = _m_left + 0.005 + bidx * _btn_spacing
+        ax_b = fig.add_axes([bx, _by_lower, _btn_w_ctrl, _bh])
         btn = Button(ax_b, blabel,
                      color=T['CTRL_BG'], hovercolor=T['CTRL_HOVER'])
         btn.label.set_fontsize(FONT_BTN + 1)
@@ -1505,6 +1544,8 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         # Reset smooth caches so new theme applies cleanly
         state['_prev_stft'] = None
         state['_prev_var'] = {}
+        state['_baseline'] = None
+        state['_baseline_samples'] = 0
         fig.canvas.draw_idle()
 
     theme_btn.on_clicked(_toggle_theme)
@@ -1514,11 +1555,11 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
     fig.text(_sep4_x, 0.017, '|', fontsize=10, color=T['BORDER'],
              va='center')
     ax_save_btn = fig.add_axes([_sep4_x + 0.008, _tab_y, 0.055, _tab_h])
-    save_btn = Button(ax_save_btn, 'Save: ON',
+    save_btn = Button(ax_save_btn, 'View Only',
                       color=T['CTRL_BG'], hovercolor=T['CTRL_HOVER'])
     save_btn.label.set_fontsize(FONT_BTN)
-    save_btn.label.set_color(T['SUCCESS'])
-    save_btn.label.set_fontweight('bold')
+    save_btn.label.set_color(T['TEXT_SECONDARY'])
+    save_btn.label.set_fontweight('normal')
 
     def _toggle_saving(event):
         state['saving'] = not state['saving']
@@ -1547,20 +1588,38 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
                            _param_boxes, _lbl_toggle_btns)
 
     # ================================================================
-    # Update function (called every frame ~30 fps)
+    # Update function (called every frame ~20 fps)
     # ================================================================
     _alpha = SMOOTH_ALPHA
+    _min_pkt_delta = 3  # skip frame if fewer than 3 new packets
 
     def update(buf):
         seq = buf.count
         if seq < 2:
             return
-        if seq == state['last_seq']:
+        delta = seq - state['last_seq']
+        if delta < _min_pkt_delta:
             return
         state['last_seq'] = seq
         state['fps_times'].append(time.time())
 
         win_sec = state['win_sec']
+
+        # Update baseline (long-term running average over BASELINE_WINDOW_SEC)
+        baseline_win = BASELINE_WINDOW_SEC
+        amps_bl, wt_bl = buf.snapshot_amps(max_age_sec=baseline_win + 1.0)
+        if len(amps_bl) >= 10:
+            ncols_bl = min(NUM_SUBCARRIERS, amps_bl.shape[1])
+            baseline_mean = amps_bl[:, :ncols_bl].mean(axis=0)
+            if state['_baseline'] is None:
+                state['_baseline'] = baseline_mean.copy()
+                state['_baseline_samples'] = len(amps_bl)
+            else:
+                # Exponential moving average for smooth baseline updates
+                alpha_bl = 0.02
+                state['_baseline'] = (alpha_bl * baseline_mean +
+                                     (1 - alpha_bl) * state['_baseline'])
+                state['_baseline_samples'] += len(amps_bl)
 
         # -- Tab 0: Signals --
         if state['active_tab'] == 0:
@@ -1576,6 +1635,12 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
             ts_win = t_rel[mask] - t_start
             if len(data_win) < 2:
                 return
+
+            # Subtract baseline if available
+            if state['_baseline'] is not None and len(state['_baseline']) >= ncols:
+                data_win = data_win - state['_baseline'][:ncols]
+                # Take absolute value to measure deviation from baseline
+                data_win = np.abs(data_win)
 
             # STFT spectrogram (mean amplitude across subcarriers)
             mean_sig = data_win[:, :ncols].mean(axis=1)
@@ -1593,7 +1658,7 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
                     ft = np.abs(np.fft.rfft(seg * window))[:STFT_FREQ_BINS]
                     spec[:, fi] = ft
                 spec_db = 20.0 * np.log10(spec + 1e-10)
-                spec_db = np.clip(spec_db, 0, 40)
+                spec_db = np.clip(spec_db, 0, AMP_MAX)
                 if n_frames != HEATMAP_COLS:
                     x_old = np.linspace(0, 1, n_frames)
                     x_new = np.linspace(0, 1, HEATMAP_COLS)
@@ -1649,6 +1714,11 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
                 dw = amps_v[tr >= ts_]
                 tw = tr[tr >= ts_] - ts_
                 if len(dw) >= 3:
+                    # Subtract baseline if available
+                    if state['_baseline'] is not None and len(state['_baseline']) >= ncols:
+                        dw = dw - state['_baseline'][:ncols]
+                        # Take absolute value to measure deviation from baseline
+                        dw = np.abs(dw)
                     bc, bi, ct, po = _compute_binned(
                         dw, tw, vw, HEATMAP_COLS)
                     vdata = _bin_variance_2d(
@@ -1796,10 +1866,13 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
                 fps = (len(ft) - 1) / dt_fps
         n_saved = saver.file_count if saver is not None else 0
         tab_tag = ['SIG', 'VAR', 'PCA', 'MDL'][state['active_tab']]
+        baseline_status = ('BL:ON' if state['_baseline'] is not None
+                           else f'BL:CALC({state["_baseline_samples"]/150:.0f}s)')
         status_text.set_text(
             f'[{tab_tag}]  Pkts: {seq:,}  |  '
             f'FPS: {fps:.0f}  |  '
             f'Label: {state["label"]}  |  '
+            f'{baseline_status}  |  '
             f'Saved: {n_saved}  |  Win: {win_sec:.0f}s')
 
         fig.canvas.draw_idle()
@@ -1867,7 +1940,7 @@ def main():
 
     signal.signal(signal.SIGINT, lambda *_: stop_event.set())
 
-    buf = RawCSIBuffer(maxlen=30000)
+    buf = RawCSIBuffer(maxlen=15000)
     pca_tracker = PCATracker()
     model_mgr = ModelManager(args.out_dir)
 
@@ -1915,7 +1988,7 @@ def main():
     fig.canvas.draw()
     fig.canvas.flush_events()
 
-    target_dt = 0.033  # ~30 fps
+    target_dt = 0.050  # ~20 fps (lighter on CPU)
 
     try:
         tk_widget = fig.canvas.get_tk_widget()

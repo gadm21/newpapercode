@@ -1,0 +1,12 @@
+{
+  "session_id": "20260415_020627",
+  "label_initial": "unlabeled",
+  "segment_sec": 10,
+  "guaranteed_sr": 150,
+  "subcarriers": 52,
+  "total_packets": 63271,
+  "total_segments_saved": 0,
+  "files": [],
+  "errors": 69,
+  "completed_at": "2026-04-15T02:12:48.473965+00:00"
+}

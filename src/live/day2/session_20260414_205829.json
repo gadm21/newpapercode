@@ -1,0 +1,3352 @@
+{
+  "session_id": "20260414_205829",
+  "label_initial": "unlabeled",
+  "segment_sec": 10,
+  "guaranteed_sr": 150,
+  "subcarriers": 52,
+  "total_packets": 456533,
+  "total_segments_saved": 371,
+  "files": [
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0001.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0001.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0002.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0002.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0003.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0003.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0004.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0004.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0005.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0005.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0006.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0006.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0007.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0007.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0008.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0008.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0009.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0009.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0010.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0010.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0011.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0011.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0012.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0012.meta.json",
+      "label": "sit",
+      "shape": [
+        1501,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0013.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0013.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0014.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0014.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0015.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0015.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0016.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0016.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0017.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0017.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0018.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0018.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0019.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0019.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0020.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0020.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0021.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0021.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0022.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0022.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0023.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0023.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0024.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0024.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0025.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0025.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0026.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0026.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0027.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0027.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0028.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0028.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0029.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0029.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0030.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0030.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0031.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0031.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0032.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0032.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0033.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0033.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0034.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0034.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0035.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0035.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0036.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0036.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0037.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0037.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0038.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0038.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0039.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0039.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0040.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0040.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0041.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0041.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0042.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0042.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0043.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0043.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0044.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0044.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0045.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0045.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0046.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0046.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0047.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0047.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0048.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0048.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0049.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0049.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0050.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0050.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0051.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0051.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0052.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0052.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0053.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0053.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0054.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0054.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0055.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0055.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0056.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0056.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0057.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0057.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0058.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0058.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0059.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0059.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0060.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0060.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0061.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0061.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0062.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0062.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0063.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0063.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0064.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0064.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0065.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0065.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0066.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0066.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0067.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0067.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0068.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0068.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0069.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0069.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0070.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0070.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0071.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0071.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0072.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0072.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0073.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0073.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0074.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0074.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0075.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0075.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0076.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0076.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0077.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0077.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0078.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0078.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0079.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0079.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0080.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0080.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0081.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0081.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0082.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0082.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0083.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0083.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0084.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0084.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0085.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0085.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0086.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0086.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0087.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0087.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0088.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0088.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0089.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0089.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0090.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0090.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0091.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0091.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0092.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0092.meta.json",
+      "label": "sit",
+      "shape": [
+        1501,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0093.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0093.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0094.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0094.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0095.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0095.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0096.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0096.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0097.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0097.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0098.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0098.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0099.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0099.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0100.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0100.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0101.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0101.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0102.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0102.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0103.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0103.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0104.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0104.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0105.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0105.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0106.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0106.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0107.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0107.meta.json",
+      "label": "sit",
+      "shape": [
+        1489,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0108.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0108.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0109.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0109.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0110.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0110.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0111.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0111.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0112.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0112.meta.json",
+      "label": "sit",
+      "shape": [
+        1487,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0113.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0113.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0114.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0114.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0115.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0115.meta.json",
+      "label": "sit",
+      "shape": [
+        1501,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0116.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0116.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0117.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0117.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0118.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0118.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0119.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0119.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0120.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0120.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0121.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0121.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0122.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0122.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0123.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0123.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0124.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0124.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0125.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0125.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0126.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0126.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0127.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0127.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0128.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0128.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0129.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0129.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0130.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0130.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0131.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0131.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0132.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0132.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0133.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0133.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0134.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0134.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0135.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0135.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0136.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0136.meta.json",
+      "label": "sit",
+      "shape": [
+        1489,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0137.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0137.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0138.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0138.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0139.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0139.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0140.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0140.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0141.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0141.meta.json",
+      "label": "sit",
+      "shape": [
+        1485,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0142.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0142.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0143.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0143.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0144.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0144.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0145.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0145.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0146.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0146.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0147.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0147.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0148.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0148.meta.json",
+      "label": "sit",
+      "shape": [
+        1481,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0149.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0149.meta.json",
+      "label": "sit",
+      "shape": [
+        1491,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0150.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0150.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0151.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0151.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0152.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0152.meta.json",
+      "label": "sit",
+      "shape": [
+        1487,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0153.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0153.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0154.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0154.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0155.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0155.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0156.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0156.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0157.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0157.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0158.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0158.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0159.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0159.meta.json",
+      "label": "sit",
+      "shape": [
+        1489,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0160.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0160.meta.json",
+      "label": "sit",
+      "shape": [
+        1501,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0161.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0161.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0162.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0162.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0163.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0163.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0164.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0164.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0165.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0165.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0166.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0166.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0167.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0167.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0168.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0168.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0169.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0169.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0170.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0170.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0171.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0171.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0172.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0172.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0173.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0173.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0174.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0174.meta.json",
+      "label": "sit",
+      "shape": [
+        1484,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0175.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0175.meta.json",
+      "label": "sit",
+      "shape": [
+        1483,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0176.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0176.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0177.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0177.meta.json",
+      "label": "sit",
+      "shape": [
+        1491,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0178.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0178.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0179.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0179.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0180.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0180.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0181.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0181.meta.json",
+      "label": "sit",
+      "shape": [
+        1477,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0182.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0182.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0183.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0183.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0184.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0184.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0185.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0185.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0186.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0186.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0187.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0187.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0188.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0188.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0189.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0189.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0190.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0190.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0191.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0191.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0192.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0192.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0193.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0193.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0194.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0194.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0195.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0195.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0196.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0196.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0197.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0197.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0198.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0198.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0199.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0199.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0200.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0200.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0201.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0201.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0202.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0202.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0203.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0203.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0204.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0204.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0205.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0205.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0206.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0206.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0207.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0207.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0208.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0208.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0209.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0209.meta.json",
+      "label": "sit",
+      "shape": [
+        1469,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0210.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0210.meta.json",
+      "label": "sit",
+      "shape": [
+        1501,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0211.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0211.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0212.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0212.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0213.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0213.meta.json",
+      "label": "sit",
+      "shape": [
+        1479,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0214.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0214.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0215.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0215.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0216.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0216.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0217.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0217.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0218.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0218.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0219.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0219.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0220.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0220.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0221.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0221.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0222.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0222.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0223.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0223.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0224.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0224.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0225.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0225.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0226.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0226.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0227.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0227.meta.json",
+      "label": "sit",
+      "shape": [
+        1481,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0228.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0228.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0229.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0229.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0230.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0230.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0231.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0231.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0232.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0232.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0233.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0233.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0234.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0234.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0235.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0235.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0236.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0236.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0237.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0237.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0238.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0238.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0239.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0239.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0240.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0240.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0241.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0241.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0242.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0242.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0243.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0243.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0244.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0244.meta.json",
+      "label": "sit",
+      "shape": [
+        1494,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0245.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0245.meta.json",
+      "label": "sit",
+      "shape": [
+        1490,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0246.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0246.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0247.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0247.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0248.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0248.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0249.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0249.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0250.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0250.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0251.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0251.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0252.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0252.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0253.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0253.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0254.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0254.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0255.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0255.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0256.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0256.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0257.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0257.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0258.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0258.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0259.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0259.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0260.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0260.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0261.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0261.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0262.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0262.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0263.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0263.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0264.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0264.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0265.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0265.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0266.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0266.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0267.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0267.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0268.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0268.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0269.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0269.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0270.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0270.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0271.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0271.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0272.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0272.meta.json",
+      "label": "sit",
+      "shape": [
+        1483,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0273.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0273.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0274.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0274.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0275.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0275.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0276.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0276.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0277.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0277.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0278.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0278.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0279.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0279.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0280.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0280.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0281.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0281.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0282.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0282.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0283.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0283.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0284.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0284.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0285.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0285.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0286.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0286.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0287.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0287.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0288.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0288.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0289.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0289.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0290.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0290.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0291.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0291.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0292.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0292.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0293.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0293.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0294.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0294.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0295.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0295.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0296.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0296.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0297.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0297.meta.json",
+      "label": "sit",
+      "shape": [
+        1478,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0298.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0298.meta.json",
+      "label": "sit",
+      "shape": [
+        1495,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0299.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0299.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0300.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0300.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0301.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0301.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0302.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0302.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0303.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0303.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0304.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0304.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0305.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0305.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0306.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0306.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0307.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0307.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0308.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0308.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0309.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0309.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0310.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0310.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0311.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0311.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0312.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0312.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0313.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0313.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0314.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0314.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0315.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0315.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0316.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0316.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0317.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0317.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0318.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0318.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0319.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0319.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0320.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0320.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0321.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0321.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0322.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0322.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0323.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0323.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0324.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0324.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0325.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0325.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0326.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0326.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0327.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0327.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0328.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0328.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0329.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0329.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0330.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0330.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0331.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0331.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0332.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0332.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0333.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0333.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0334.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0334.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0335.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0335.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0336.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0336.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0337.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0337.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0338.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0338.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0339.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0339.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0340.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0340.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0341.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0341.meta.json",
+      "label": "sit",
+      "shape": [
+        1493,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0342.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0342.meta.json",
+      "label": "sit",
+      "shape": [
+        1473,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0343.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0343.meta.json",
+      "label": "sit",
+      "shape": [
+        1492,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0344.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0344.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0345.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0345.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0346.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0346.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0347.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0347.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0348.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0348.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0349.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0349.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0350.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0350.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0351.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0351.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0352.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0352.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0353.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0353.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0354.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0354.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0355.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0355.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0356.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0356.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0357.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0357.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0358.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0358.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0359.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0359.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0360.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0360.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0361.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0361.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0362.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0362.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0363.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0363.meta.json",
+      "label": "sit",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0364.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0364.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0365.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0365.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0366.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0366.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0367.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0367.meta.json",
+      "label": "sit",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0368.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0368.meta.json",
+      "label": "sit",
+      "shape": [
+        1496,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0369.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0369.meta.json",
+      "label": "sit",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0370.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0370.meta.json",
+      "label": "sit",
+      "shape": [
+        1497,
+        52
+      ]
+    },
+    {
+      "npz": "./csi_studio_data\\sit_20260414_205829_0371.npz",
+      "meta": "./csi_studio_data\\sit_20260414_205829_0371.meta.json",
+      "label": "sit",
+      "shape": [
+        1417,
+        52
+      ]
+    }
+  ],
+  "errors": 7316,
+  "completed_at": "2026-04-14T22:01:06.698890+00:00"
+}

@@ -1,0 +1,112 @@
+{
+  "session_id": "20260414_061636",
+  "label_initial": "delete",
+  "segment_sec": 10.0,
+  "guaranteed_sr": 150,
+  "subcarriers": 52,
+  "total_packets": 14932,
+  "total_segments_saved": 11,
+  "files": [
+    {
+      "npz": "./data\\delete_20260414_061636_0001.npz",
+      "meta": "./data\\delete_20260414_061636_0001.meta.json",
+      "label": "delete",
+      "shape": [
+        1484,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0002.npz",
+      "meta": "./data\\delete_20260414_061636_0002.meta.json",
+      "label": "delete",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0003.npz",
+      "meta": "./data\\delete_20260414_061636_0003.meta.json",
+      "label": "delete",
+      "shape": [
+        1501,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0004.npz",
+      "meta": "./data\\delete_20260414_061636_0004.meta.json",
+      "label": "delete",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0005.npz",
+      "meta": "./data\\delete_20260414_061636_0005.meta.json",
+      "label": "delete",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0006.npz",
+      "meta": "./data\\delete_20260414_061636_0006.meta.json",
+      "label": "delete",
+      "shape": [
+        1498,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0007.npz",
+      "meta": "./data\\delete_20260414_061636_0007.meta.json",
+      "label": "delete",
+      "shape": [
+        1500,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0008.npz",
+      "meta": "./data\\delete_20260414_061636_0008.meta.json",
+      "label": "delete",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0009.npz",
+      "meta": "./data\\delete_20260414_061636_0009.meta.json",
+      "label": "delete",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0010.npz",
+      "meta": "./data\\delete_20260414_061636_0010.meta.json",
+      "label": "delete",
+      "shape": [
+        1499,
+        52
+      ]
+    },
+    {
+      "npz": "./data\\delete_20260414_061636_0011.npz",
+      "meta": "./data\\delete_20260414_061636_0011.meta.json",
+      "label": "delete",
+      "shape": [
+        1365,
+        52
+      ]
+    }
+  ],
+  "errors": 55,
+  "completed_at": "2026-04-14T06:44:01.149655+00:00"
+}

@@ -1,0 +1,12 @@
+{
+  "session_id": "20260414_070127",
+  "label_initial": "delete",
+  "segment_sec": 10.0,
+  "guaranteed_sr": 150,
+  "subcarriers": 52,
+  "total_packets": 0,
+  "total_segments_saved": 0,
+  "files": [],
+  "errors": 0,
+  "completed_at": "2026-04-14T07:02:30.864620+00:00"
+}

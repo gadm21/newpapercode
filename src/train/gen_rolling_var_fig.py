@@ -31,50 +31,87 @@ mask[6:32] = True   # negative freq
 mask[32] = False     # DC
 mask[33:59] = True   # positive freq
 amp_masked = amp[:, mask]  # shape: (N, 52)
+print(f"Amplitude matrix shape after masking: {amp_masked.shape}")
 
-# Pick subcarrier index 10 (arbitrary mid-band)
-sc = 10
-x = amp_masked[:, sc]
-
-def rolling_variance(arr, w):
-    n = len(arr)
-    cs = np.cumsum(arr)
-    cs2 = np.cumsum(arr**2)
-    cs = np.concatenate([[0], cs])
-    cs2 = np.concatenate([[0], cs2])
+def rolling_variance_2d(mag, var_window):
+    """Compute rolling variance over a sliding window per subcarrier.
+    Same implementation as in utils.py _rolling_variance method."""
+    if var_window <= 1:
+        return np.zeros_like(mag)
+    n = mag.shape[0]
+    cs = np.cumsum(mag, axis=0)
+    cs2 = np.cumsum(mag ** 2, axis=0)
+    cs = np.vstack([np.zeros((1, mag.shape[1])), cs])
+    cs2 = np.vstack([np.zeros((1, mag.shape[1])), cs2])
     hi = np.arange(1, n + 1)
-    lo = np.clip(hi - w, 0, None)
-    counts = (hi - lo).astype(float)
+    lo = np.clip(hi - var_window, 0, None)
+    counts = (hi - lo).reshape(-1, 1)
     means = (cs[hi] - cs[lo]) / counts
     mean_sq = (cs2[hi] - cs2[lo]) / counts
-    var = np.clip(mean_sq - means**2, 0, None)
+    var = np.clip(mean_sq - means ** 2, 0, None)
     return var
 
-# Compute rolling variances
-rv20 = rolling_variance(x, 20)
-rv200 = rolling_variance(x, 200)
-rv2000 = rolling_variance(x, 2000)
-
 # Downsample for pgfplots (every 5th sample -> ~1000 points)
-step = 5
-indices = np.arange(0, len(x), step)
+step = 1
+indices = np.arange(0, amp_masked.shape[0], step)
+amp_downsampled = amp_masked[indices]
 
-out = pd.DataFrame({
-    'n': indices,
-    'rv20': rv20[indices],
-    'rv200': rv200[indices],
-    'rv2000': rv2000[indices],
-})
+# Generate output file 1: Raw 52 subcarriers
+raw_data = []
+for i in range(52):
+    for idx, sample_idx in enumerate(indices):
+        raw_data.append({
+            'n': sample_idx,
+            'subcarrier': i,
+            'amplitude': amp_downsampled[idx, i]
+        })
+
+raw_df = pd.DataFrame(raw_data)
 
 os.makedirs(OUT_DIR, exist_ok=True)
-out_path = os.path.join(OUT_DIR, 'rolling_var_data.csv')
-out.to_csv(out_path, index=False, float_format='%.4f')
-print(f"Wrote {len(out)} rows to {out_path}")
+raw_path = os.path.join(OUT_DIR, 'raw_52_subcarriers.csv')
+raw_df.to_csv(raw_path, index=False, float_format='%.4f')
+print(f"Wrote {len(raw_df)} rows to {raw_path}")
 
-# Also copy to paper directory for pgfplots
-paper_path = os.path.join(PAPER_DIR, 'rolling_var_data.csv')
-out.to_csv(paper_path, index=False, float_format='%.4f')
-print(f"Also copied to {paper_path}")
-print(f"rv20  range: [{rv20.min():.2f}, {rv20.max():.2f}]")
-print(f"rv200 range: [{rv200.min():.2f}, {rv200.max():.2f}]")
-print(f"rv2000 range: [{rv2000.min():.2f}, {rv2000.max():.2f}]")
+# Also copy to paper directory
+paper_raw_path = os.path.join(PAPER_DIR, 'raw_52_subcarriers.csv')
+raw_df.to_csv(paper_raw_path, index=False, float_format='%.4f')
+print(f"Also copied raw data to {paper_raw_path}")
+
+# Compute rolling variances for all 52 subcarriers with 3 window sizes
+var_windows = [20, 200, 2000]
+rv_data = []
+
+for w in var_windows:
+    rv = rolling_variance_2d(amp_masked, w)
+    rv_downsampled = rv[indices]
+    
+    for i in range(52):
+        for idx, sample_idx in enumerate(indices):
+            rv_data.append({
+                'n': sample_idx,
+                'subcarrier': i,
+                'window': w,
+                'variance': rv_downsampled[idx, i]
+            })
+
+rv_df = pd.DataFrame(rv_data)
+
+# Generate output file 2: 52x3 rolling variances
+rv_path = os.path.join(OUT_DIR, 'rolling_variances_52x3.csv')
+rv_df.to_csv(rv_path, index=False, float_format='%.4f')
+print(f"Wrote {len(rv_df)} rows to {rv_path}")
+
+# Also copy to paper directory
+paper_rv_path = os.path.join(PAPER_DIR, 'rolling_variances_52x3.csv')
+rv_df.to_csv(paper_rv_path, index=False, float_format='%.4f')
+print(f"Also copied rolling variance data to {paper_rv_path}")
+
+# Print statistics for each window size
+for w in var_windows:
+    rv = rolling_variance_2d(amp_masked, w)
+    print(f"Window {w}: variance range [{rv.min():.4f}, {rv.max():.4f}], mean {rv.mean():.4f}")
+
+print(f"\nGenerated files:")
+print(f"  1. Raw 52 subcarriers: {raw_path}")
+print(f"  2. Rolling variances (52x3): {rv_path}")
