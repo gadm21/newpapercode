@@ -868,6 +868,73 @@ def _make_pdf_btn(fig, ax_source, title, x, y, w, h):
     return ax_btn, btn
 
 
+def _make_expand_btn(fig, graph_id, ax_target, other_axes, x, y, w, h, state):
+    """Create a small expand/collapse button."""
+    ax_btn = fig.add_axes([x, y, w, h])
+    btn = Button(ax_btn, '⛶', color=T['CTRL_BG'],
+                 hovercolor=T['CTRL_HOVER'])
+    btn.label.set_color(T['TEXT_PRIMARY'])
+    btn.label.set_fontsize(FONT_BTN + 2)
+    
+    # Store original position
+    original_pos = ax_target.get_position()
+    
+    # Store original positions in state if not already stored
+    if '_original_positions' not in state:
+        state['_original_positions'] = {}
+    state['_original_positions'][graph_id] = original_pos
+    
+    # Store button reference in state
+    if '_expand_buttons' not in state:
+        state['_expand_buttons'] = {}
+    state['_expand_buttons'][graph_id] = btn
+    
+    # Store axes references for each graph
+    if '_graph_axes' not in state:
+        state['_graph_axes'] = {}
+    state['_graph_axes'][graph_id] = {
+        'target': ax_target,
+        'others': other_axes
+    }
+    
+    def toggle_expand(event):
+        current = state['expanded_graph']
+        L, R, Top, Bot = 0.055, 0.91, 0.92, 0.10
+        
+        if current == graph_id:
+            # Collapse current
+            state['expanded_graph'] = None
+            btn.label.set_text('⛶')
+            # Restore all axes visibility and positions
+            for ax in other_axes:
+                ax.set_visible(True)
+            ax_target.set_visible(True)
+            ax_target.set_position(state['_original_positions'][graph_id])
+        else:
+            # Collapse previously expanded graph if any
+            if current is not None and current in state['_expand_buttons']:
+                prev_btn = state['_expand_buttons'][current]
+                prev_btn.label.set_text('⛶')
+                prev_axes = state['_graph_axes'][current]
+                for ax in prev_axes['others']:
+                    ax.set_visible(True)
+                prev_axes['target'].set_visible(True)
+                prev_axes['target'].set_position(state['_original_positions'][current])
+            
+            # Expand this graph
+            state['expanded_graph'] = graph_id
+            btn.label.set_text('⛷')
+            # Hide other axes
+            for ax in other_axes:
+                ax.set_visible(False)
+            ax_target.set_visible(True)
+            # Expand to full tab area
+            ax_target.set_position([L, Bot, R - L, Top - Bot])
+    
+    btn.on_clicked(toggle_expand)
+    return ax_btn, btn
+
+
 def _compute_binned(data_win, ts_win, win_sec, nbins):
     """Shared binning helper."""
     bin_edges = np.linspace(0, win_sec, nbins + 1)
@@ -930,6 +997,7 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
         'fps_times': deque(maxlen=30),
         'theme': 'night',
         'saving': False,
+        'expanded_graph': None,
         '_prev_stft': None,
         '_prev_mean': None,
         '_prev_std': None,
@@ -1029,8 +1097,21 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
                                  _pdf_x, 0.52, _pdf_w, _pdf_h)
     pb0_3, b0_3 = _make_pdf_btn(fig, ax_mean, 'Mean Std Amplitude',
                                  _pdf_x, 0.24, _pdf_w, _pdf_h)
+    
+    # Expand buttons
+    _expand_x = _pdf_x + _pdf_w + 0.005
+    eb0_1, eb0_1_btn = _make_expand_btn(fig, 'heat', ax_heat, 
+                                         [ax_cbar, ax_lines, ax_mean],
+                                         _expand_x, 0.80, _pdf_w, _pdf_h, state)
+    eb0_2, eb0_2_btn = _make_expand_btn(fig, 'lines', ax_lines,
+                                         [ax_heat, ax_cbar, ax_mean],
+                                         _expand_x, 0.52, _pdf_w, _pdf_h, state)
+    eb0_3, eb0_3_btn = _make_expand_btn(fig, 'mean', ax_mean,
+                                         [ax_heat, ax_cbar, ax_lines],
+                                         _expand_x, 0.24, _pdf_w, _pdf_h, state)
 
-    tab0_axes = [ax_heat, ax_cbar, ax_lines, ax_mean, pb0_1, pb0_2, pb0_3]
+    tab0_axes = [ax_heat, ax_cbar, ax_lines, ax_mean, pb0_1, pb0_2, pb0_3,
+                 eb0_1, eb0_2, eb0_3]
 
     # ================================================================
     # TAB 1: Variance (single full-height heatmap)
@@ -1387,6 +1468,20 @@ def build_ui(initial_label, segment_sec, saver, pca_tracker, model_mgr=None):
             # Show/hide dynamic label toggle buttons for Model tab
             for ax_t in _lbl_toggle_axes:
                 ax_t.set_visible(idx == 3)
+            # Reset expanded graph when leaving tab 0
+            if idx != 0 and state['expanded_graph'] is not None:
+                # Collapse the expanded graph
+                graph_id = state['expanded_graph']
+                if graph_id in state['_expand_buttons']:
+                    btn = state['_expand_buttons'][graph_id]
+                    btn.label.set_text('⛶')
+                if graph_id in state['_graph_axes']:
+                    axes_info = state['_graph_axes'][graph_id]
+                    for ax in axes_info['others']:
+                        ax.set_visible(True)
+                    axes_info['target'].set_visible(True)
+                    axes_info['target'].set_position(state['_original_positions'][graph_id])
+                state['expanded_graph'] = None
             for i, (b, bax) in enumerate(zip(tab_btn_list, tab_ax_list)):
                 if i == idx:
                     bax.set_facecolor(T['TAB_ACTIVE'])
